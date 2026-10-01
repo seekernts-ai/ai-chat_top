@@ -13,7 +13,6 @@
 <title>Moa 💞</title>
 
 <style>
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -24,7 +23,7 @@
 :root {
     --app-height: 100dvh;
 
-    --bg: #000;
+    --bg: #000000;
     --header: #09090b;
     --composer: #08080a;
 
@@ -33,7 +32,7 @@
     --bubble: #17171b;
     --bubble-border: #29292f;
 
-    --text: #fff;
+    --text: #ffffff;
     --muted: #8b8b92;
 
     --snap-blue: #26a8ff;
@@ -46,11 +45,8 @@ html,
 body {
     width: 100%;
     height: 100%;
-
     overflow: hidden;
-
     background: #000;
-
     color: white;
 
     font-family:
@@ -74,39 +70,29 @@ button {
 
 .app {
     position: relative;
-
     width: 100%;
     height: var(--app-height);
-
     overflow: hidden;
-
     background: var(--bg);
 }
 
-
-/* DESKTOP PREVIEW */
+/* Desktop preview */
 
 @media (min-width: 700px) {
-
     body {
         display: flex;
         justify-content: center;
-
         background: #050505;
     }
 
     .app {
         max-width: 430px;
-
         border-left: 1px solid #161616;
         border-right: 1px solid #161616;
     }
 }
 
-
-/* =========================
-   HEADER
-   ========================= */
+/* HEADER */
 
 .header {
     position: absolute;
@@ -152,7 +138,6 @@ button {
     border-radius: 50%;
 
     background: transparent;
-
     color: white;
 
     display: flex;
@@ -167,7 +152,6 @@ button {
 
 .profile {
     flex: 1;
-
     min-width: 0;
 
     display: flex;
@@ -181,7 +165,6 @@ button {
     height: 50px;
 
     border-radius: 50%;
-
     overflow: hidden;
 
     background: #eee;
@@ -194,9 +177,7 @@ button {
     height: 125%;
 
     object-fit: cover;
-
-    object-position:
-        center 24%;
+    object-position: center 24%;
 }
 
 .profile-info {
@@ -205,32 +186,23 @@ button {
 
 .profile-name {
     font-size: 20px;
-
     font-weight: 750;
-
     line-height: 1.1;
-
     white-space: nowrap;
 }
 
 .profile-status {
     margin-top: 3px;
-
     font-size: 14px;
-
     color: var(--muted);
 }
 
 .header-actions {
     display: flex;
-
     align-items: center;
 }
 
-
-/* =========================
-   CHAT
-   ========================= */
+/* CHAT */
 
 .chat {
     position: absolute;
@@ -253,7 +225,6 @@ button {
     z-index: 1;
 
     overflow-y: auto;
-
     overscroll-behavior: contain;
 
     padding:
@@ -270,12 +241,10 @@ button {
     display: none;
 }
 
-
 /* DATE */
 
 .date-divider {
     display: flex;
-
     align-items: center;
 
     gap: 12px;
@@ -288,32 +257,22 @@ button {
 
 .date-divider-line {
     height: 1px;
-
     flex: 1;
-
     background: #1d1d20;
 }
 
 .date-divider-text {
     font-size: 11px;
-
     font-weight: 700;
-
     letter-spacing: 1px;
-
     color: #77777e;
 }
 
-
-/* =========================
-   MESSAGES
-   ========================= */
+/* MESSAGES */
 
 .message-group {
     display: flex;
-
     flex-direction: column;
-
     gap: 5px;
 
     margin-bottom: 18px;
@@ -329,9 +288,7 @@ button {
 
 .sender {
     padding: 0 3px;
-
     font-size: 14px;
-
     font-weight: 750;
 }
 
@@ -360,11 +317,9 @@ button {
     color: white;
 
     font-size: 16px;
-
     line-height: 1.4;
 
     word-break: break-word;
-
     white-space: pre-wrap;
 }
 
@@ -374,14 +329,10 @@ button {
 
 .message-group.user .message {
     max-width: 75%;
-
     border-top-right-radius: 8px;
 }
 
-
-/* =========================
-   BITMOJI
-   ========================= */
+/* BITMOJI */
 
 .bitmoji-stage {
     position: absolute;
@@ -418,53 +369,41 @@ button {
 
 .bitmoji-character img {
     display: block;
-
     width: 100%;
     height: auto;
 
     user-select: none;
-
     -webkit-user-drag: none;
 }
 
-
-/* IDLE / PEEK */
+/* idle */
 
 .bitmoji-character.peek {
     width: 158px;
-
     left: -4px;
-
     bottom: -21px;
 
     transform:
         translateY(0);
 }
 
-
-/* THINKING */
+/* thinking */
 
 .bitmoji-character.thinking {
     width: 111px;
-
     left: 2px;
-
     bottom: -47px;
 
     transform:
         translateY(-5px);
 }
 
-
-/* =========================
-   TYPING BUBBLE
-   ========================= */
+/* TYPING */
 
 .typing-wrapper {
     position: absolute;
 
     left: 87px;
-
     bottom: 105px;
 
     opacity: 0;
@@ -492,7 +431,6 @@ button {
     position: relative;
 
     min-width: 64px;
-
     height: 41px;
 
     padding:
@@ -517,7 +455,6 @@ button {
     position: absolute;
 
     left: -5px;
-
     bottom: 7px;
 
     width: 15px;
@@ -534,9 +471,7 @@ button {
 
 .typing-dots {
     display: flex;
-
     align-items: center;
-
     gap: 5px;
 }
 
@@ -564,28 +499,20 @@ button {
 }
 
 @keyframes typingDot {
-
     0%,
     75%,
     100% {
         opacity: .35;
-
-        transform:
-            translateY(0);
+        transform: translateY(0);
     }
 
     35% {
         opacity: 1;
-
-        transform:
-            translateY(-3px);
+        transform: translateY(-3px);
     }
 }
 
-
-/* =========================
-   COMPOSER
-   ========================= */
+/* COMPOSER */
 
 .composer-shell {
     position: absolute;
@@ -627,14 +554,12 @@ button {
     width: 100%;
 
     display: flex;
-
     align-items: center;
 
     gap: 7px;
 }
 
-
-/* CAMERA */
+/* camera */
 
 .camera-button {
     width: 46px;
@@ -643,15 +568,12 @@ button {
     flex-shrink: 0;
 
     border: none;
-
     border-radius: 50%;
 
     background: white;
-
     color: black;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 }
@@ -661,12 +583,10 @@ button {
     height: 25px;
 }
 
-
-/* INPUT */
+/* input */
 
 .input-shell {
     flex: 1;
-
     min-width: 0;
 
     height: 46px;
@@ -685,7 +605,6 @@ button {
     background: #060607;
 
     display: flex;
-
     align-items: center;
 
     gap: 7px;
@@ -704,13 +623,11 @@ button {
 
 .chat-input {
     flex: 1;
-
     min-width: 0;
 
     height: 100%;
 
     border: none;
-
     outline: none;
 
     background: transparent;
@@ -724,8 +641,7 @@ button {
     color: #7a7a82;
 }
 
-
-/* MIC */
+/* mic */
 
 .input-action {
     width: 31px;
@@ -738,7 +654,6 @@ button {
     color: white;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -752,20 +667,16 @@ button {
     fill: none;
 
     stroke: currentColor;
-
     stroke-width: 2;
 
     stroke-linecap: round;
-
     stroke-linejoin: round;
 }
 
-
-/* EXTRA ACTIONS */
+/* extra icons */
 
 .composer-actions {
     display: flex;
-
     align-items: center;
 
     gap: 1px;
@@ -784,7 +695,6 @@ button {
     color: white;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 }
@@ -796,23 +706,19 @@ button {
     fill: none;
 
     stroke: currentColor;
-
     stroke-width: 2;
 
     stroke-linecap: round;
-
     stroke-linejoin: round;
 }
 
-
-/* SEND */
+/* send */
 
 .send-button {
     width: 40px;
     height: 40px;
 
     border: none;
-
     border-radius: 50%;
 
     background: #0a84ff;
@@ -820,7 +726,6 @@ button {
     color: white;
 
     display: none;
-
     align-items: center;
     justify-content: center;
 
@@ -838,19 +743,13 @@ button {
     fill: none;
 
     stroke: currentColor;
-
     stroke-width: 2.5;
 
     stroke-linecap: round;
-
     stroke-linejoin: round;
 }
 
-
-/* SMALL PHONES */
-
 @media (max-width: 375px) {
-
     .profile-avatar {
         width: 46px;
         height: 46px;
@@ -864,20 +763,12 @@ button {
         width: 29px;
     }
 }
-
 </style>
 </head>
 
-
 <body>
 
-<div
-    class="app"
-    id="app"
->
-
-
-<!-- HEADER -->
+<div class="app" id="app">
 
 <header class="header">
 
@@ -885,7 +776,6 @@ button {
         class="header-button"
         aria-label="Tillbaka"
     >
-
         <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -896,21 +786,17 @@ button {
         >
             <path d="M15 18l-6-6 6-6"></path>
         </svg>
-
     </button>
 
 
     <div class="profile">
 
         <div class="profile-avatar">
-
             <img
                 src="bitmoji_idle.png"
                 alt="Moa"
             >
-
         </div>
-
 
         <div class="profile-info">
 
@@ -936,18 +822,14 @@ button {
             class="header-button"
             aria-label="Ring"
         >
-
             <svg
                 viewBox="0 0 24 24"
                 fill="currentColor"
             >
-
                 <path
                     d="
                     M6.6 10.8
-                    c1.7 3.3
-                    4.3 5.9
-                    7.6 7.6
+                    c1.7 3.3 4.3 5.9 7.6 7.6
                     l2.5-2.5
                     c.3-.3.8-.4 1.2-.3
                     1.3.4 2.7.6 4.1.6
@@ -961,9 +843,7 @@ button {
                     l-2.5 2.5z
                     "
                 ></path>
-
             </svg>
-
         </button>
 
 
@@ -971,12 +851,10 @@ button {
             class="header-button"
             aria-label="Videosamtal"
         >
-
             <svg
                 viewBox="0 0 24 24"
                 fill="currentColor"
             >
-
                 <path
                     d="
                     M17 10.5V7
@@ -987,18 +865,13 @@ button {
                     l5 4v-11l-5 4z
                     "
                 ></path>
-
             </svg>
-
         </button>
 
     </div>
 
 </header>
 
-
-
-<!-- CHAT -->
 
 <main
     class="chat"
@@ -1017,16 +890,10 @@ button {
 
     </div>
 
-
-    <div
-        id="messageList"
-    ></div>
+    <div id="messageList"></div>
 
 </main>
 
-
-
-<!-- BITMOJI -->
 
 <div class="bitmoji-stage">
 
@@ -1034,13 +901,11 @@ button {
         class="bitmoji-character peek"
         id="bitmojiCharacter"
     >
-
         <img
             id="bitmojiImage"
             src="bitmoji_peek.png"
-            alt="Moa"
+            alt="Moa Bitmoji"
         >
-
     </div>
 
 
@@ -1052,11 +917,9 @@ button {
         <div class="typing-bubble">
 
             <div class="typing-dots">
-
                 <span></span>
                 <span></span>
                 <span></span>
-
             </div>
 
         </div>
@@ -1066,21 +929,14 @@ button {
 </div>
 
 
-
-<!-- COMPOSER -->
-
 <div class="composer-shell">
 
     <div class="composer">
-
-
-        <!-- CAMERA -->
 
         <button
             class="camera-button"
             aria-label="Kamera"
         >
-
             <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -1089,7 +945,6 @@ button {
                 stroke-linecap="round"
                 stroke-linejoin="round"
             >
-
                 <path
                     d="
                     M14.5 4
@@ -1107,18 +962,13 @@ button {
                     cy="13"
                     r="4"
                 ></circle>
-
             </svg>
-
         </button>
 
-
-        <!-- INPUT -->
 
         <div class="input-shell">
 
             <div class="input-red-line"></div>
-
 
             <input
                 id="messageInput"
@@ -1138,7 +988,6 @@ button {
                 id="micButton"
                 aria-label="Mikrofon"
             >
-
                 <svg viewBox="0 0 24 24">
 
                     <path
@@ -1157,31 +1006,23 @@ button {
                         "
                     ></path>
 
-                    <path
-                        d="M12 17v4"
-                    ></path>
+                    <path d="M12 17v4"></path>
 
                 </svg>
-
             </button>
 
         </div>
 
-
-        <!-- ACTIONS -->
 
         <div
             class="composer-actions"
             id="composerActions"
         >
 
-            <!-- EMOJI -->
-
             <button
                 class="composer-action"
                 aria-label="Emoji"
             >
-
                 <svg viewBox="0 0 24 24">
 
                     <circle
@@ -1203,19 +1044,14 @@ button {
                     ></path>
 
                 </svg>
-
             </button>
 
-
-            <!-- STICKER -->
 
             <button
                 class="composer-action"
                 aria-label="Sticker"
             >
-
                 <svg viewBox="0 0 24 24">
-
                     <path
                         d="
                         M20 15
@@ -1225,19 +1061,14 @@ button {
                         a2 2 0 0 1 2 2z
                         "
                     ></path>
-
                 </svg>
-
             </button>
 
-
-            <!-- GALLERY -->
 
             <button
                 class="composer-action"
                 aria-label="Galleri"
             >
-
                 <svg viewBox="0 0 24 24">
 
                     <rect
@@ -1263,30 +1094,20 @@ button {
                     ></path>
 
                 </svg>
-
             </button>
 
         </div>
 
-
-        <!-- SEND -->
 
         <button
             class="send-button"
             id="sendButton"
             aria-label="Skicka"
         >
-
             <svg viewBox="0 0 24 24">
-
                 <path d="M5 12h14"></path>
-
-                <path
-                    d="M13 6l6 6-6 6"
-                ></path>
-
+                <path d="M13 6l6 6-6 6"></path>
             </svg>
-
         </button>
 
     </div>
@@ -1296,36 +1117,25 @@ button {
 </div>
 
 
-
 <script>
-
-/* ========================================
+/* ===============================
    CONFIG
-   ======================================== */
+   =============================== */
 
 const WORKER_URL =
     "https://moa-ai-backend.seekernets.workers.dev";
 
-
 const PEEK_BITMOJI =
     "bitmoji_peek.png";
-
 
 const THINKING_BITMOJI =
     "bitmoji_thinking.png";
 
-
 const STORAGE_KEY =
-    "moa_chat_history_v2";
+    "moa_chat_history_v3";
 
-
-/*
-    Här kan vi senare koppla
-    AI-inställningsmenyn.
-*/
 
 const aiSettings = {
-
     name:
         "Moa 💞",
 
@@ -1340,68 +1150,57 @@ const aiSettings = {
 
     customInstructions:
         ""
-
 };
 
 
-
-/* ========================================
+/* ===============================
    ELEMENTS
-   ======================================== */
+   =============================== */
 
 const chat =
     document.getElementById(
         "chat"
     );
 
-
 const messageList =
     document.getElementById(
         "messageList"
     );
-
 
 const input =
     document.getElementById(
         "messageInput"
     );
 
-
 const sendButton =
     document.getElementById(
         "sendButton"
     );
-
 
 const micButton =
     document.getElementById(
         "micButton"
     );
 
-
 const composerActions =
     document.getElementById(
         "composerActions"
     );
-
 
 const bitmojiImage =
     document.getElementById(
         "bitmojiImage"
     );
 
-
 const bitmojiCharacter =
     document.getElementById(
         "bitmojiCharacter"
     );
 
-
 const typingWrapper =
     document.getElementById(
         "typingWrapper"
     );
-
 
 const profileStatus =
     document.getElementById(
@@ -1409,94 +1208,70 @@ const profileStatus =
     );
 
 
-
-/* ========================================
+/* ===============================
    CHAT HISTORY
-   ======================================== */
+   =============================== */
 
-let conversationHistory =
-    [];
+let conversationHistory = [];
 
 
 try {
-
     const saved =
         localStorage.getItem(
             STORAGE_KEY
         );
 
-
     if (saved) {
-
         const parsed =
             JSON.parse(saved);
-
 
         if (
             Array.isArray(parsed)
         ) {
-
             conversationHistory =
                 parsed;
-
         }
-
     }
-
 }
-
 catch (error) {
-
     console.error(
         "Storage error:",
         error
     );
-
 }
 
 
-
-/* ========================================
+/* ===============================
    SAVE HISTORY
-   ======================================== */
+   =============================== */
 
 function saveHistory() {
-
     try {
-
         localStorage.setItem(
             STORAGE_KEY,
             JSON.stringify(
                 conversationHistory
             )
         );
-
     }
-
     catch (error) {
-
         console.error(
-            "Could not save chat:",
+            "Could not save history:",
             error
         );
-
     }
-
 }
 
 
-
-/* ========================================
-   MOBILE VIEWPORT
-   ======================================== */
+/* ===============================
+   VIEWPORT
+   =============================== */
 
 function updateViewportHeight() {
-
     const height =
         window.visualViewport
             ? window.visualViewport.height
             : window.innerHeight;
-
 
     document
         .documentElement
@@ -1505,7 +1280,6 @@ function updateViewportHeight() {
             "--app-height",
             height + "px"
         );
-
 }
 
 
@@ -1521,20 +1295,16 @@ window.addEventListener(
 if (
     window.visualViewport
 ) {
-
     window.visualViewport
         .addEventListener(
             "resize",
             () => {
-
                 updateViewportHeight();
-
 
                 if (
                     document.activeElement
                     === input
                 ) {
-
                     setTimeout(
                         () =>
                             scrollToBottom(
@@ -1542,128 +1312,91 @@ if (
                             ),
                         80
                     );
-
                 }
-
             }
         );
-
 }
 
 
-
-/* ========================================
+/* ===============================
    SCROLL
-   ======================================== */
+   =============================== */
 
 function scrollToBottom(
     force = false
 ) {
-
     requestAnimationFrame(
         () => {
-
             chat.scrollTop =
                 chat.scrollHeight;
 
-
             if (force) {
-
                 setTimeout(
                     () => {
-
                         chat.scrollTop =
                             chat.scrollHeight;
-
                     },
                     100
                 );
-
             }
-
         }
     );
-
 }
 
 
-
-/* ========================================
+/* ===============================
    INPUT UI
-   ======================================== */
+   =============================== */
 
 function updateInputUI() {
-
     const hasText =
         input
             .value
             .trim()
             .length > 0;
 
-
     if (hasText) {
-
-        composerActions
-            .style
-            .display =
+        composerActions.style.display =
             "none";
 
-
-        micButton
-            .style
-            .display =
+        micButton.style.display =
             "none";
-
 
         sendButton
             .classList
             .add(
                 "visible"
             );
-
     }
-
     else {
-
-        composerActions
-            .style
-            .display =
+        composerActions.style.display =
             "flex";
 
-
-        micButton
-            .style
-            .display =
+        micButton.style.display =
             "flex";
-
 
         sendButton
             .classList
             .remove(
                 "visible"
             );
-
     }
-
 }
 
 
-
-/* ========================================
+/* ===============================
    CREATE MESSAGE
-   ======================================== */
+   =============================== */
 
 function createMessage(
     senderName,
     text,
     type
 ) {
-
     const group =
         document.createElement(
             "div"
         );
-
 
     group.className =
         `message-group ${type}`;
@@ -1674,10 +1407,8 @@ function createMessage(
             "div"
         );
 
-
     sender.className =
         "sender";
-
 
     sender.textContent =
         senderName;
@@ -1688,10 +1419,8 @@ function createMessage(
             "div"
         );
 
-
     message.className =
         "message";
-
 
     message.textContent =
         text;
@@ -1701,112 +1430,83 @@ function createMessage(
         sender
     );
 
-
     group.appendChild(
         message
     );
 
-
     return group;
-
 }
 
 
-
-/* ========================================
-   RENDER CHAT
-   ======================================== */
+/* ===============================
+   RENDER HISTORY
+   =============================== */
 
 function renderHistory() {
-
     messageList.innerHTML =
         "";
-
 
     if (
         conversationHistory.length === 0
     ) {
-
         messageList.appendChild(
-
             createMessage(
                 "Moa 💞",
                 "Hejj 💞",
                 "ai"
             )
-
         );
 
-
         return;
-
     }
-
 
     for (
         const item
         of conversationHistory
     ) {
-
         if (
             item.role === "user"
         ) {
-
             messageList.appendChild(
-
                 createMessage(
                     "Jag",
                     item.content,
                     "user"
                 )
-
             );
-
         }
-
 
         else if (
             item.role === "assistant"
         ) {
-
             messageList.appendChild(
-
                 createMessage(
                     "Moa 💞",
                     item.content,
                     "ai"
                 )
-
             );
-
         }
-
     }
-
 }
 
 
-
-/* ========================================
-   BITMOJI TYPING
-   ======================================== */
+/* ===============================
+   TYPING STATE
+   =============================== */
 
 function showTypingState() {
-
     profileStatus.textContent =
         "Skriver...";
-
 
     bitmojiImage.src =
         THINKING_BITMOJI;
 
-
     bitmojiCharacter
         .classList
         .remove(
             "peek"
         );
-
 
     bitmojiCharacter
         .classList
@@ -1814,31 +1514,24 @@ function showTypingState() {
             "thinking"
         );
 
-
     typingWrapper
         .classList
         .add(
             "visible"
         );
-
 
     scrollToBottom(
         true
     );
-
 }
 
 
-
 function hideTypingState() {
-
     profileStatus.textContent =
         "Online";
 
-
     bitmojiImage.src =
         PEEK_BITMOJI;
-
 
     bitmojiCharacter
         .classList
@@ -1846,79 +1539,101 @@ function hideTypingState() {
             "thinking"
         );
 
-
     bitmojiCharacter
         .classList
         .add(
             "peek"
         );
 
-
     typingWrapper
         .classList
         .remove(
             "visible"
         );
-
 }
 
 
-
-/* ========================================
-   WORKERS AI REQUEST
-   ======================================== */
+/* ===============================
+   WORKER REQUEST
+   =============================== */
 
 async function getAIReply() {
-
     console.log(
-        "Sending request to:",
+        "Calling worker:",
         WORKER_URL
     );
 
+    const payload = {
+        messages:
+            conversationHistory,
 
-    const response =
-        await fetch(
-            WORKER_URL,
-            {
-                method:
-                    "POST",
+        settings:
+            aiSettings
+    };
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
+    console.log(
+        "Payload:",
+        payload
+    );
 
-                body:
-                    JSON.stringify({
+    let response;
 
-                        messages:
-                            conversationHistory,
+    try {
+        response =
+            await fetch(
+                WORKER_URL,
+                {
+                    method:
+                        "POST",
 
-                        settings:
-                            aiSettings
+                    mode:
+                        "cors",
 
-                    })
-            }
+                    cache:
+                        "no-store",
+
+                    credentials:
+                        "omit",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Accept":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+                }
+            );
+    }
+    catch (error) {
+        console.error(
+            "FETCH FAILED:",
+            error
         );
 
+        throw new Error(
+            "Failed to fetch"
+        );
+    }
 
-    /*
-        Läs först som text så att vi
-        kan se även trasiga svar.
-    */
 
     const raw =
         await response.text();
 
 
     console.log(
-        "Worker HTTP:",
+        "Worker status:",
         response.status
     );
 
 
     console.log(
-        "Worker raw response:",
+        "Worker response:",
         raw
     );
 
@@ -1927,75 +1642,59 @@ async function getAIReply() {
 
 
     try {
-
         data =
             JSON.parse(raw);
-
     }
-
-    catch (error) {
-
+    catch {
         throw new Error(
             "Workern skickade ogiltig JSON"
         );
-
     }
 
 
     if (
         !response.ok
     ) {
-
         throw new Error(
             data.error ||
             "HTTP " +
             response.status
         );
-
     }
 
 
     if (
         data.ok !== true
     ) {
-
         throw new Error(
             data.error ||
             "Workern rapporterade ett fel"
         );
-
     }
 
 
     if (
-        typeof data.reply
-        !== "string" ||
-        !data.reply.trim()
+        typeof data.reply !==
+        "string"
     ) {
-
         throw new Error(
             "AI:n skickade inget svar"
         );
-
     }
 
 
     return data.reply.trim();
-
 }
 
 
-
-/* ========================================
+/* ===============================
    SEND MESSAGE
-   ======================================== */
+   =============================== */
 
-let sending =
-    false;
+let sending = false;
 
 
 async function sendMessage() {
-
     if (sending) {
         return;
     }
@@ -2016,10 +1715,6 @@ async function sendMessage() {
         true;
 
 
-    /*
-        Lägg till användarens meddelande.
-    */
-
     conversationHistory.push({
         role:
             "user",
@@ -2033,13 +1728,11 @@ async function sendMessage() {
 
 
     messageList.appendChild(
-
         createMessage(
             "Jag",
             text,
             "user"
         )
-
     );
 
 
@@ -2055,22 +1748,13 @@ async function sendMessage() {
     );
 
 
-    /*
-        Visa Moa thinking.
-    */
-
     showTypingState();
 
 
     try {
-
         const reply =
             await getAIReply();
 
-
-        /*
-            Lägg AI-svaret i historiken.
-        */
 
         conversationHistory.push({
             role:
@@ -2088,24 +1772,20 @@ async function sendMessage() {
 
 
         messageList.appendChild(
-
             createMessage(
                 "Moa 💞",
                 reply,
                 "ai"
             )
-
         );
 
 
         scrollToBottom(
             true
         );
-
     }
 
     catch (error) {
-
         console.error(
             "AI ERROR:",
             error
@@ -2115,47 +1795,35 @@ async function sendMessage() {
         hideTypingState();
 
 
-        /*
-            Tillfälligt visar vi det riktiga
-            felet så vi enkelt kan felsöka.
-        */
-
-        const errorMessage =
+        const errorText =
             "Fel: " +
             error.message;
 
 
         messageList.appendChild(
-
             createMessage(
                 "Moa 💞",
-                errorMessage,
+                errorText,
                 "ai"
             )
-
         );
 
 
         scrollToBottom(
             true
         );
-
     }
 
     finally {
-
         sending =
             false;
-
     }
-
 }
 
 
-
-/* ========================================
+/* ===============================
    EVENTS
-   ======================================== */
+   =============================== */
 
 input.addEventListener(
     "input",
@@ -2166,17 +1834,14 @@ input.addEventListener(
 input.addEventListener(
     "keydown",
     event => {
-
         if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ) {
-
             event.preventDefault();
 
             sendMessage();
-
         }
-
     }
 );
 
@@ -2190,7 +1855,6 @@ sendButton.addEventListener(
 input.addEventListener(
     "focus",
     () => {
-
         setTimeout(
             () =>
                 scrollToBottom(
@@ -2198,15 +1862,13 @@ input.addEventListener(
                 ),
             250
         );
-
     }
 );
 
 
-
-/* ========================================
+/* ===============================
    START
-   ======================================== */
+   =============================== */
 
 bitmojiImage.src =
     PEEK_BITMOJI;
@@ -2228,7 +1890,6 @@ updateInputUI();
 scrollToBottom();
 
 </script>
-
 
 </body>
 </html>
