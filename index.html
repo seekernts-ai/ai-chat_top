@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
-  />
-  <meta name="theme-color" content="#000000" />
+  >
+
+  <meta name="theme-color" content="#000000">
+
   <title>My AI</title>
 
   <style>
@@ -18,18 +21,23 @@
     }
 
     :root {
-      --bg: #000;
-      --panel: #0b0b0d;
-      --line: #1b1b1f;
-      --bubble: #15151a;
-      --bubble-border: #23232a;
-      --text: #fff;
-      --muted: #8b8b92;
-      --snap-blue: #27a7ff;
+      --app-height: 100dvh;
+
+      --background: #000000;
+      --header: #09090b;
+      --composer: #08080a;
+
+      --border: #1d1d21;
+      --bubble: #17171b;
+      --bubble-border: #29292f;
+
+      --text: #ffffff;
+      --muted: #898990;
+
+      --snap-blue: #24a8ff;
       --snap-red: #ff2d55;
-      --composer-height: 82px;
-      --safe-bottom: env(safe-area-inset-bottom);
-      --safe-top: env(safe-area-inset-top);
+
+      --composer-height: 76px;
     }
 
     html,
@@ -37,8 +45,11 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+
       background: #000;
-      color: var(--text);
+
+      color: white;
+
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -49,157 +60,242 @@
         sans-serif;
     }
 
-    body {
-      background: #050505;
+    button,
+    input {
+      font: inherit;
     }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* ========================================
+       APP
+       ======================================== */
 
     .app {
       position: relative;
+
       width: 100%;
-      height: 100dvh;
-      background: var(--bg);
+      height: var(--app-height);
+
       overflow: hidden;
-      padding-top: var(--safe-top);
-      padding-bottom: var(--safe-bottom);
+
+      background: var(--background);
     }
 
     @media (min-width: 700px) {
       body {
         display: flex;
         justify-content: center;
+
         background: #050505;
       }
 
       .app {
         max-width: 430px;
-        border-left: 1px solid #151515;
-        border-right: 1px solid #151515;
+
+        border-left: 1px solid #161616;
+        border-right: 1px solid #161616;
       }
     }
 
-    /* HEADER */
+    /* ========================================
+       HEADER
+       ======================================== */
 
     .header {
-      position: relative;
-      z-index: 10;
-      height: 78px;
+      position: absolute;
+
+      top: 0;
+      left: 0;
+      right: 0;
+
+      height: calc(78px + env(safe-area-inset-top));
+
+      padding:
+        calc(8px + env(safe-area-inset-top))
+        12px
+        8px;
+
+      z-index: 30;
+
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--line);
-      background: #09090b;
+
+      gap: 8px;
+
+      background: var(--header);
+
+      border-bottom: 1px solid var(--border);
     }
 
-    .icon-btn {
-      width: 38px;
-      height: 38px;
+    .header-button {
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
       border: none;
       border-radius: 50%;
+
       background: transparent;
       color: white;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
     }
 
-    .icon-btn svg {
-      width: 24px;
-      height: 24px;
+    .header-button svg {
+      width: 25px;
+      height: 25px;
     }
 
     .profile {
       flex: 1;
+
       min-width: 0;
+
       display: flex;
       align-items: center;
+
       gap: 10px;
     }
 
-    .avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      overflow: hidden;
-      background: #fff;
+    .profile-avatar {
+      width: 50px;
+      height: 50px;
+
       flex-shrink: 0;
+
+      border-radius: 50%;
+
+      overflow: hidden;
+
+      background: #eeeeee;
+
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .avatar img {
-      width: 100%;
-      height: 100%;
+    .profile-avatar img {
+      width: 125%;
+      height: 125%;
+
       object-fit: cover;
+
+      object-position: center 24%;
     }
 
-    .meta {
+    .profile-info {
       min-width: 0;
     }
 
-    .meta h1 {
-      font-size: 18px;
+    .profile-name {
+      font-size: 20px;
+      font-weight: 750;
+
       line-height: 1.1;
-      font-weight: 700;
+
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .meta p {
-      margin-top: 2px;
-      font-size: 13px;
+    .profile-status {
+      margin-top: 3px;
+
+      font-size: 14px;
+
       color: var(--muted);
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 2px;
+
+      gap: 1px;
     }
 
-    /* CHAT */
+    /* ========================================
+       CHAT
+       ======================================== */
 
     .chat {
       position: absolute;
-      inset: 78px 0 calc(var(--composer-height) + var(--safe-bottom)) 0;
+
+      top: calc(78px + env(safe-area-inset-top));
+      left: 0;
+      right: 0;
+
+      bottom:
+        calc(
+          var(--composer-height)
+          + env(safe-area-inset-bottom)
+        );
+
+      z-index: 1;
+
       overflow-y: auto;
-      padding: 14px 12px 120px;
-      scrollbar-width: none;
+
+      overscroll-behavior: contain;
+
+      padding:
+        18px
+        12px
+        155px;
+
       background: #000;
+
+      scrollbar-width: none;
     }
 
     .chat::-webkit-scrollbar {
       display: none;
     }
 
-    .divider {
+    /* ========================================
+       DATE DIVIDER
+       ======================================== */
+
+    .date-divider {
       display: flex;
       align-items: center;
+
       gap: 12px;
-      margin-bottom: 18px;
+
+      margin: 4px 0 22px;
     }
 
-    .divider .line {
+    .date-divider-line {
       flex: 1;
+
       height: 1px;
-      background: #19191d;
+
+      background: #1d1d20;
     }
 
-    .divider .text {
-      font-size: 12px;
-      letter-spacing: 1px;
-      color: #76767c;
+    .date-divider-text {
+      font-size: 11px;
       font-weight: 700;
+
+      letter-spacing: 1px;
+
+      color: #77777e;
     }
+
+    /* ========================================
+       MESSAGES
+       ======================================== */
 
     .message-group {
-      margin-bottom: 16px;
       display: flex;
       flex-direction: column;
+
+      margin-bottom: 18px;
+
       gap: 5px;
     }
 
@@ -212,9 +308,10 @@
     }
 
     .sender {
-      font-size: 13px;
-      font-weight: 700;
-      padding: 0 2px;
+      padding: 0 3px;
+
+      font-size: 14px;
+      font-weight: 750;
     }
 
     .message-group.ai .sender {
@@ -225,545 +322,1505 @@
       color: var(--snap-red);
     }
 
-    .bubble {
-      max-width: 82%;
-      padding: 12px 14px;
-      border-radius: 18px;
-      font-size: 16px;
-      line-height: 1.35;
-      word-break: break-word;
+    .message {
+      max-width: 84%;
+
+      padding: 12px 15px;
+
       border: 1px solid var(--bubble-border);
+
+      border-radius: 20px;
+
       background: var(--bubble);
-      color: white;
+
+      color: #ffffff;
+
+      font-size: 16px;
+
+      line-height: 1.4;
+
+      word-break: break-word;
     }
 
-    .message-group.ai .bubble {
-      border-top-left-radius: 7px;
+    .message-group.ai .message {
+      border-top-left-radius: 8px;
     }
 
-    .message-group.user .bubble {
-      border-top-right-radius: 7px;
-      max-width: 72%;
+    .message-group.user .message {
+      max-width: 75%;
+
+      border-top-right-radius: 8px;
+
+      background: #151519;
     }
 
-    /* BITMOJI LAYER */
+    /* ========================================
+       BITMOJI STAGE
 
-    .bitmoji-layer {
+       Detta lagret ligger:
+       ÖVER chatten
+       UNDER composer-panelen
+       ======================================== */
+
+    .bitmoji-stage {
       position: absolute;
-      left: 12px;
-      bottom: calc(var(--safe-bottom) + 4px);
-      width: 132px;
-      height: 150px;
-      z-index: 2;
+
+      left: 14px;
+
+      bottom:
+        calc(
+          var(--composer-height)
+          + env(safe-area-inset-bottom)
+          - 19px
+        );
+
+      width: 180px;
+      height: 180px;
+
+      z-index: 15;
+
       pointer-events: none;
     }
 
     .bitmoji-character {
       position: absolute;
-      left: 0;
-      bottom: -34px; /* detta gömmer nederdelen under panelen */
-      width: 108px;
-      transition: transform 0.22s ease;
+
+      transform-origin: bottom center;
+
+      transition:
+        opacity 0.18s ease,
+        transform 0.22s ease,
+        width 0.22s ease,
+        left 0.22s ease,
+        bottom 0.22s ease;
     }
 
     .bitmoji-character img {
+      display: block;
+
       width: 100%;
       height: auto;
-      display: block;
+
+      user-select: none;
+
+      -webkit-user-drag: none;
     }
 
-    .bitmoji-character.typing {
-      transform: translateY(-8px);
+    /* ========================================
+       IDLE / PEEK
+
+       bitmoji_peek.png
+       ======================================== */
+
+    .bitmoji-character.peek {
+      width: 158px;
+
+      left: -4px;
+
+      /*
+        Bilden går ner bakom composer-panelen.
+        Panelen täcker nederdelen.
+      */
+      bottom: -21px;
+
+      transform: translateY(0);
     }
 
-    .typing-pop {
+    /* ========================================
+       THINKING
+
+       bitmoji_thinking.png
+       ======================================== */
+
+    .bitmoji-character.thinking {
+      width: 111px;
+
+      left: 2px;
+
+      /*
+        Thinking-bilden är mycket högre,
+        därför behöver den tryckas längre ner.
+      */
+      bottom: -47px;
+
+      transform: translateY(-5px);
+    }
+
+    /* ========================================
+       TYPING BUBBLE
+       ======================================== */
+
+    .typing-wrapper {
       position: absolute;
-      left: 72px;
-      bottom: 92px;
+
+      left: 87px;
+      bottom: 105px;
+
       opacity: 0;
-      transform: translateY(8px) scale(0.96);
-      transition: 0.18s ease;
+
+      transform:
+        translateY(8px)
+        scale(0.94);
+
+      transition:
+        opacity 0.18s ease,
+        transform 0.18s ease;
+
+      pointer-events: none;
     }
 
-    .typing-pop.show {
+    .typing-wrapper.visible {
       opacity: 1;
-      transform: translateY(0) scale(1);
+
+      transform:
+        translateY(0)
+        scale(1);
     }
 
     .typing-bubble {
-      min-width: 56px;
-      min-height: 36px;
-      padding: 10px 12px;
-      border-radius: 20px;
-      background: white;
+      position: relative;
+
+      min-width: 64px;
+      height: 41px;
+
+      padding: 0 14px;
+
+      border-radius: 23px;
+
+      background: #ffffff;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+
+      box-shadow:
+        0 7px 18px
+        rgba(0, 0, 0, 0.35);
     }
 
     .typing-bubble::after {
       content: "";
+
       position: absolute;
-      left: -6px;
+
+      left: -5px;
       bottom: 7px;
-      width: 14px;
-      height: 14px;
+
+      width: 15px;
+      height: 15px;
+
       background: white;
-      border-bottom-right-radius: 13px;
-      transform: rotate(30deg);
+
+      transform: rotate(32deg);
+
+      border-bottom-right-radius: 12px;
     }
 
     .typing-dots {
       display: flex;
+      align-items: center;
+
       gap: 5px;
     }
 
     .typing-dots span {
+      display: block;
+
       width: 7px;
       height: 7px;
-      background: #111;
+
       border-radius: 50%;
-      animation: dotBounce 1s infinite ease-in-out;
-      opacity: 0.45;
+
+      background: #252525;
+
+      animation:
+        typingDot
+        1s
+        infinite
+        ease-in-out;
     }
 
     .typing-dots span:nth-child(2) {
-      animation-delay: 0.15s;
+      animation-delay: 0.14s;
     }
 
     .typing-dots span:nth-child(3) {
-      animation-delay: 0.3s;
+      animation-delay: 0.28s;
     }
 
-    @keyframes dotBounce {
-      0%, 80%, 100% {
-        transform: translateY(0);
+    @keyframes typingDot {
+      0%,
+      75%,
+      100% {
         opacity: 0.35;
+
+        transform: translateY(0);
       }
-      40% {
-        transform: translateY(-3px);
+
+      35% {
         opacity: 1;
+
+        transform: translateY(-3px);
       }
     }
 
-    /* COMPOSER */
+    /* ========================================
+       COMPOSER
+       ======================================== */
 
     .composer-shell {
       position: absolute;
+
       left: 0;
       right: 0;
       bottom: 0;
-      z-index: 6;
-      min-height: var(--composer-height);
-      padding: 8px 10px calc(10px + var(--safe-bottom));
-      border-top: 1px solid #15151a;
-      background: rgba(8,8,10,0.98);
-      backdrop-filter: blur(10px);
+
+      z-index: 20;
+
+      min-height:
+        calc(
+          var(--composer-height)
+          + env(safe-area-inset-bottom)
+        );
+
+      padding:
+        9px
+        10px
+        calc(10px + env(safe-area-inset-bottom));
+
+      background:
+        rgba(8, 8, 10, 0.985);
+
+      border-top:
+        1px solid #1a1a1e;
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .composer {
+      width: 100%;
+
       display: flex;
       align-items: center;
-      gap: 8px;
+
+      gap: 7px;
     }
 
-    .camera-btn {
+    /* CAMERA */
+
+    .camera-button {
       width: 46px;
       height: 46px;
-      border-radius: 50%;
+
+      flex-shrink: 0;
+
       border: none;
-      background: #fff;
-      color: #000;
+      border-radius: 50%;
+
+      background: white;
+      color: black;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      cursor: pointer;
     }
 
-    .camera-btn svg {
-      width: 24px;
-      height: 24px;
+    .camera-button svg {
+      width: 25px;
+      height: 25px;
     }
+
+    /* INPUT */
 
     .input-shell {
       flex: 1;
+
       min-width: 0;
+
       height: 46px;
-      border-radius: 24px;
-      border: 2px solid #36363b;
+
+      padding:
+        0
+        9px
+        0
+        11px;
+
+      border:
+        2px solid #38383e;
+
+      border-radius: 25px;
+
       background: #060607;
+
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 0 10px 0 12px;
+
+      gap: 7px;
     }
 
-    .red-bar {
+    .input-red-line {
       width: 3px;
-      height: 24px;
-      border-radius: 999px;
-      background: var(--snap-red);
+      height: 25px;
+
       flex-shrink: 0;
+
+      border-radius: 999px;
+
+      background: var(--snap-red);
     }
 
     .chat-input {
       flex: 1;
+
       min-width: 0;
+
       height: 100%;
+
       border: none;
       outline: none;
+
       background: transparent;
+
       color: white;
+
       font-size: 16px;
     }
 
     .chat-input::placeholder {
-      color: #7e7e84;
+      color: #7a7a82;
     }
 
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      flex-shrink: 0;
-    }
+    /* MIC INSIDE INPUT */
 
-    .mini-btn {
+    .input-action {
       width: 31px;
       height: 31px;
+
+      flex-shrink: 0;
+
       border: none;
       border-radius: 50%;
+
       background: transparent;
       color: white;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      cursor: pointer;
     }
 
-    .mini-btn svg {
+    .input-action svg {
       width: 22px;
       height: 22px;
-      stroke: currentColor;
+
       fill: none;
+
+      stroke: currentColor;
       stroke-width: 2;
+
       stroke-linecap: round;
       stroke-linejoin: round;
     }
 
-    .send-btn {
+    /* ACTIONS OUTSIDE INPUT */
+
+    .composer-actions {
+      display: flex;
+      align-items: center;
+
+      flex-shrink: 0;
+
+      gap: 1px;
+    }
+
+    .composer-action {
+      width: 33px;
+      height: 40px;
+
+      border: none;
+
+      background: transparent;
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .composer-action svg {
+      width: 24px;
+      height: 24px;
+
+      fill: none;
+
+      stroke: currentColor;
+      stroke-width: 2;
+
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* SEND */
+
+    .send-button {
       width: 40px;
       height: 40px;
+
+      flex-shrink: 0;
+
       border: none;
       border-radius: 50%;
+
       background: #0a84ff;
+
       color: white;
+
       display: none;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      cursor: pointer;
     }
 
-    .send-btn.show {
+    .send-button.visible {
       display: flex;
     }
 
-    .send-btn svg {
-      width: 20px;
-      height: 20px;
-      stroke: currentColor;
+    .send-button svg {
+      width: 21px;
+      height: 21px;
+
       fill: none;
+
+      stroke: currentColor;
       stroke-width: 2.5;
+
       stroke-linecap: round;
       stroke-linejoin: round;
     }
+
+    /* ========================================
+       SMALL PHONES
+       ======================================== */
+
+    @media (max-width: 375px) {
+      .profile-avatar {
+        width: 46px;
+        height: 46px;
+      }
+
+      .profile-name {
+        font-size: 18px;
+      }
+
+      .header {
+        padding-left: 7px;
+        padding-right: 7px;
+      }
+
+      .composer-shell {
+        padding-left: 7px;
+        padding-right: 7px;
+      }
+
+      .composer {
+        gap: 5px;
+      }
+
+      .camera-button {
+        width: 43px;
+        height: 43px;
+      }
+
+      .composer-action {
+        width: 29px;
+      }
+
+      .composer-action svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
   </style>
 </head>
-<body>
-  <div class="app">
 
-    <header class="header">
-      <button class="icon-btn" aria-label="Tillbaka">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M15 18l-6-6 6-6"></path>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ======================================
+       HEADER
+       ====================================== -->
+
+  <header class="header">
+
+    <button
+      class="header-button"
+      aria-label="Tillbaka"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.7"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+    </button>
+
+    <div class="profile">
+
+      <div class="profile-avatar">
+        <img
+          src="bitmoji_idle.png"
+          alt="My AI"
+        >
+      </div>
+
+      <div class="profile-info">
+
+        <div class="profile-name">
+          My AI
+        </div>
+
+        <div
+          class="profile-status"
+          id="profileStatus"
+        >
+          Online
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="header-actions">
+
+      <!-- PHONE -->
+
+      <button
+        class="header-button"
+        aria-label="Ring"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="
+              M6.6 10.8
+              c1.7 3.3 4.3 5.9 7.6 7.6
+              l2.5-2.5
+              c.3-.3.8-.4 1.2-.3
+              1.3.4 2.7.6 4.1.6
+              .6 0 1 .4 1 1V21
+              c0 .6-.4 1-1 1
+              C11.5 22 2 12.5 2 1
+              c0-.6.4-1 1-1h3.8
+              c.6 0 1 .4 1 1
+              0 1.4.2 2.8.6 4.1
+              .1.4 0 .9-.3 1.2
+              l-2.5 2.5z
+            "
+          ></path>
         </svg>
       </button>
 
-      <div class="profile">
-        <div class="avatar">
-          <img src="bitmoji_idle.png" alt="Bitmoji">
-        </div>
+      <!-- VIDEO -->
 
-        <div class="meta">
-          <h1>My AI</h1>
-          <p>Online</p>
-        </div>
-      </div>
+      <button
+        class="header-button"
+        aria-label="Videosamtal"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="
+              M17 10.5V7
+              c0-1.1-.9-2-2-2H4
+              C2.9 5 2 5.9 2 7v10
+              c0 1.1.9 2 2 2h11
+              c1.1 0 2-.9 2-2v-3.5
+              l5 4v-11l-5 4z
+            "
+          ></path>
+        </svg>
+      </button>
 
-      <div class="header-actions">
-        <button class="icon-btn" aria-label="Ring">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6.6 10.8c1.7 3.3 4.3 5.9 7.6 7.6l2.5-2.5c.3-.3.8-.4 1.2-.3 1.3.4 2.7.6 4.1.6.6 0 1 .4 1 1V21c0 .6-.4 1-1 1C11.5 22 2 12.5 2 1c0-.6.4-1 1-1h3.8c.6 0 1 .4 1 1 0 1.4.2 2.8.6 4.1.1.4 0 .9-.3 1.2l-2.5 2.5z"/>
-          </svg>
-        </button>
-
-        <button class="icon-btn" aria-label="Video">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17 10.5V7c0-1.1-.9-2-2-2H4C2.9 5 2 5.9 2 7v10c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2v-3.5l5 4v-11l-5 4z"/>
-          </svg>
-        </button>
-      </div>
-    </header>
-
-    <main class="chat" id="chat">
-      <div class="divider">
-        <div class="line"></div>
-        <div class="text">NU</div>
-        <div class="line"></div>
-      </div>
-
-      <div class="message-group ai">
-        <div class="sender">My AI</div>
-        <div class="bubble">Hej 👋 Jag är din AI på Snapchat-style. Skriv något så svarar jag.</div>
-      </div>
-
-      <div id="messagesEnd"></div>
-    </main>
-
-    <div class="bitmoji-layer">
-      <div class="bitmoji-character" id="bitmojiCharacter">
-        <img id="bitmojiImage" src="bitmoji_idle.png" alt="Bitmoji">
-      </div>
-
-      <div class="typing-pop" id="typingBubble">
-        <div class="typing-bubble">
-          <div class="typing-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <div class="composer-shell">
-      <div class="composer">
+  </header>
 
-        <button class="camera-btn" aria-label="Kamera">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
-            <path d="M14.5 4l1.5 2H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l1.5-2z"></path>
-            <circle cx="12" cy="13" r="4"></circle>
-          </svg>
-        </button>
 
-        <div class="input-shell">
-          <div class="red-bar"></div>
+  <!-- ======================================
+       CHAT
+       ====================================== -->
 
-          <input
-            id="messageInput"
-            class="chat-input"
-            type="text"
-            placeholder="Chat"
-            autocomplete="off"
-            autocorrect="on"
-            enterkeyhint="send"
-          />
+  <main
+    class="chat"
+    id="chat"
+  >
 
-          <div class="actions" id="extraActions">
-            <!-- mic -->
-            <button class="mini-btn" aria-label="Mikrofon">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3z"></path>
-                <path d="M19 10a7 7 0 0 1-14 0"></path>
-                <path d="M12 17v4"></path>
-              </svg>
-            </button>
+    <div class="date-divider">
 
-            <!-- smile -->
-            <button class="mini-btn" aria-label="Emoji">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="9"></circle>
-                <path d="M9 10h.01"></path>
-                <path d="M15 10h.01"></path>
-                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-              </svg>
-            </button>
+      <div class="date-divider-line"></div>
 
-            <!-- sticker/chat -->
-            <button class="mini-btn" aria-label="Sticker">
-              <svg viewBox="0 0 24 24">
-                <path d="M21 15a2 2 0 0 1-2 2H9l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </button>
+      <div class="date-divider-text">
+        NU
+      </div>
 
-            <!-- gallery -->
-            <button class="mini-btn" aria-label="Galleri">
-              <svg viewBox="0 0 24 24">
-                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                <circle cx="8.5" cy="10" r="1.4"></circle>
-                <path d="M21 15l-5-5-8 8"></path>
-              </svg>
-            </button>
-          </div>
+      <div class="date-divider-line"></div>
+
+    </div>
+
+
+    <div class="message-group ai">
+
+      <div class="sender">
+        My AI
+      </div>
+
+      <div class="message">
+        Hej 👋 Vad vill du att vi ska snacka om?
+      </div>
+
+    </div>
+
+
+    <div id="messageInsertPoint"></div>
+
+  </main>
+
+
+  <!-- ======================================
+       BITMOJI
+
+       Detta lager är alltid aktivt.
+       ====================================== -->
+
+  <div class="bitmoji-stage">
+
+    <div
+      class="bitmoji-character peek"
+      id="bitmojiCharacter"
+    >
+
+      <img
+        id="bitmojiImage"
+        src="bitmoji_peek.png"
+        alt="My AI Bitmoji"
+      >
+
+    </div>
+
+
+    <!-- TYPING BUBBLE -->
+
+    <div
+      class="typing-wrapper"
+      id="typingWrapper"
+    >
+
+      <div class="typing-bubble">
+
+        <div class="typing-dots">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
         </div>
 
-        <button class="send-btn" id="sendButton" aria-label="Skicka">
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12h14"></path>
-            <path d="M13 6l6 6-6 6"></path>
-          </svg>
-        </button>
-
       </div>
+
     </div>
+
   </div>
 
-  <script>
-    const input = document.getElementById("messageInput");
-    const chat = document.getElementById("chat");
-    const sendButton = document.getElementById("sendButton");
-    const extraActions = document.getElementById("extraActions");
-    const bitmojiImage = document.getElementById("bitmojiImage");
-    const bitmojiCharacter = document.getElementById("bitmojiCharacter");
-    const typingBubble = document.getElementById("typingBubble");
-    const messagesEnd = document.getElementById("messagesEnd");
 
-    const IDLE_BITMOJI = "bitmoji_idle.png";
-    const THINKING_BITMOJI = "bitmoji_thinking.png";
+  <!-- ======================================
+       COMPOSER
+       ====================================== -->
 
-    function scrollToBottom(force = false) {
-      requestAnimationFrame(() => {
-        chat.scrollTop = chat.scrollHeight;
-        if (force) {
-          setTimeout(() => {
-            chat.scrollTop = chat.scrollHeight;
-          }, 120);
+  <div class="composer-shell">
+
+    <div class="composer">
+
+      <!-- CAMERA -->
+
+      <button
+        class="camera-button"
+        aria-label="Kamera"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.1"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+
+          <path
+            d="
+              M14.5 4
+              l1.5 2H20
+              a2 2 0 0 1 2 2v10
+              a2 2 0 0 1-2 2H4
+              a2 2 0 0 1-2-2V8
+              a2 2 0 0 1 2-2h4
+              l1.5-2z
+            "
+          ></path>
+
+          <circle
+            cx="12"
+            cy="13"
+            r="4"
+          ></circle>
+
+        </svg>
+
+      </button>
+
+
+      <!-- INPUT -->
+
+      <div class="input-shell">
+
+        <div class="input-red-line"></div>
+
+        <input
+          id="messageInput"
+          class="chat-input"
+          type="text"
+          placeholder="Chat"
+          autocomplete="off"
+          autocorrect="on"
+          autocapitalize="sentences"
+          spellcheck="true"
+          enterkeyhint="send"
+        >
+
+
+        <!-- MIC -->
+
+        <button
+          class="input-action"
+          id="micButton"
+          aria-label="Mikrofon"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path
+              d="
+                M12 3
+                a3 3 0 0 1 3 3v5
+                a3 3 0 1 1-6 0V6
+                a3 3 0 0 1 3-3z
+              "
+            ></path>
+
+            <path
+              d="
+                M19 10
+                a7 7 0 0 1-14 0
+              "
+            ></path>
+
+            <path d="M12 17v4"></path>
+
+          </svg>
+
+        </button>
+
+      </div>
+
+
+      <!-- EXTRA ACTIONS -->
+
+      <div
+        class="composer-actions"
+        id="composerActions"
+      >
+
+        <!-- EMOJI -->
+
+        <button
+          class="composer-action"
+          aria-label="Emoji"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+            ></circle>
+
+            <path d="M9 10h.01"></path>
+            <path d="M15 10h.01"></path>
+
+            <path
+              d="
+                M8 14
+                s1.5 2 4 2
+                4-2 4-2
+              "
+            ></path>
+
+          </svg>
+
+        </button>
+
+
+        <!-- STICKER / CHAT -->
+
+        <button
+          class="composer-action"
+          aria-label="Sticker"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path
+              d="
+                M20 15
+                a2 2 0 0 1-2 2H9
+                l-4 4V6
+                a2 2 0 0 1 2-2h11
+                a2 2 0 0 1 2 2z
+              "
+            ></path>
+
+          </svg>
+
+        </button>
+
+
+        <!-- GALLERY -->
+
+        <button
+          class="composer-action"
+          aria-label="Galleri"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <rect
+              x="3"
+              y="5"
+              width="18"
+              height="14"
+              rx="2"
+            ></rect>
+
+            <circle
+              cx="8.5"
+              cy="10"
+              r="1.4"
+            ></circle>
+
+            <path
+              d="
+                M21 15
+                l-5-5
+                -8 8
+              "
+            ></path>
+
+          </svg>
+
+        </button>
+
+      </div>
+
+
+      <!-- SEND -->
+
+      <button
+        class="send-button"
+        id="sendButton"
+        aria-label="Skicka"
+      >
+
+        <svg viewBox="0 0 24 24">
+
+          <path d="M5 12h14"></path>
+
+          <path
+            d="M13 6l6 6-6 6"
+          ></path>
+
+        </svg>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+  /*
+    ========================================
+    ELEMENTS
+    ========================================
+  */
+
+  const app =
+    document.getElementById("app");
+
+  const chat =
+    document.getElementById("chat");
+
+  const input =
+    document.getElementById("messageInput");
+
+  const sendButton =
+    document.getElementById("sendButton");
+
+  const micButton =
+    document.getElementById("micButton");
+
+  const composerActions =
+    document.getElementById("composerActions");
+
+  const bitmojiImage =
+    document.getElementById("bitmojiImage");
+
+  const bitmojiCharacter =
+    document.getElementById("bitmojiCharacter");
+
+  const typingWrapper =
+    document.getElementById("typingWrapper");
+
+  const profileStatus =
+    document.getElementById("profileStatus");
+
+  const messageInsertPoint =
+    document.getElementById("messageInsertPoint");
+
+
+  /*
+    ========================================
+    BITMOJI FILES
+    ========================================
+  */
+
+  const PEEK_BITMOJI =
+    "bitmoji_peek.png";
+
+  const THINKING_BITMOJI =
+    "bitmoji_thinking.png";
+
+
+  /*
+    ========================================
+    MOBILE VIEWPORT
+
+    Gör att composer följer med upp när
+    iPhone/Android visar sitt RIKTIGA
+    tangentbord.
+    ========================================
+  */
+
+  function updateViewportHeight() {
+
+    const viewportHeight =
+      window.visualViewport
+        ? window.visualViewport.height
+        : window.innerHeight;
+
+    document.documentElement.style.setProperty(
+      "--app-height",
+      viewportHeight + "px"
+    );
+
+  }
+
+
+  updateViewportHeight();
+
+
+  window.addEventListener(
+    "resize",
+    updateViewportHeight
+  );
+
+
+  if (window.visualViewport) {
+
+    window.visualViewport.addEventListener(
+      "resize",
+      () => {
+
+        updateViewportHeight();
+
+        if (
+          document.activeElement === input
+        ) {
+
+          setTimeout(
+            () => scrollToBottom(true),
+            60
+          );
+
         }
-      });
-    }
 
-    function updateComposerState() {
-      const hasText = input.value.trim().length > 0;
-
-      if (hasText) {
-        extraActions.style.display = "none";
-        sendButton.classList.add("show");
-      } else {
-        extraActions.style.display = "flex";
-        sendButton.classList.remove("show");
       }
-    }
+    );
 
-    function createMessage(senderName, text, type) {
-      const group = document.createElement("div");
-      group.className = `message-group ${type}`;
+  }
 
-      const sender = document.createElement("div");
-      sender.className = "sender";
-      sender.textContent = senderName;
 
-      const bubble = document.createElement("div");
-      bubble.className = "bubble";
-      bubble.textContent = text;
+  /*
+    ========================================
+    SCROLL
+    ========================================
+  */
 
-      group.appendChild(sender);
-      group.appendChild(bubble);
-      return group;
-    }
+  function scrollToBottom(force = false) {
 
-    function showTypingState() {
-      bitmojiImage.src = THINKING_BITMOJI;
-      bitmojiCharacter.classList.add("typing");
-      typingBubble.classList.add("show");
-      scrollToBottom(true);
-    }
+    requestAnimationFrame(() => {
 
-    function hideTypingState() {
-      bitmojiImage.src = IDLE_BITMOJI;
-      bitmojiCharacter.classList.remove("typing");
-      typingBubble.classList.remove("show");
-    }
+      chat.scrollTop =
+        chat.scrollHeight;
 
-    function generateAIReply(userText) {
-      const text = userText.toLowerCase();
+      if (force) {
 
-      if (text.includes("hej")) {
-        return "Hej 👋 Vad vill du att vi ska snacka om?";
+        setTimeout(() => {
+
+          chat.scrollTop =
+            chat.scrollHeight;
+
+        }, 100);
+
       }
 
-      if (text.includes("snap")) {
-        return "Nu börjar det faktiskt kännas mycket mer som en riktig Snapchat-konversation.";
-      }
-
-      if (text.includes("bitmoji")) {
-        return "Ja, Bitmojin gör jättemycket för känslan här faktiskt.";
-      }
-
-      if (text.includes("hur mår du")) {
-        return "Jag mår bra 🤍 Jag är redo att chatta.";
-      }
-
-      return "Det här ser riktigt bra ut nu. Nästa steg efter detta är att koppla chatten till riktig AI så svaren blir smarta på riktigt.";
-    }
-
-    function sendMessage() {
-      const text = input.value.trim();
-      if (!text) return;
-
-      const userMessage = createMessage("Jag", text, "user");
-      chat.insertBefore(userMessage, messagesEnd);
-
-      input.value = "";
-      updateComposerState();
-      scrollToBottom(true);
-
-      showTypingState();
-
-      const reply = generateAIReply(text);
-
-      setTimeout(() => {
-        hideTypingState();
-
-        const aiMessage = createMessage("My AI", reply, "ai");
-        chat.insertBefore(aiMessage, messagesEnd);
-
-        scrollToBottom(true);
-      }, 1500);
-    }
-
-    input.addEventListener("input", updateComposerState);
-
-    input.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        sendMessage();
-      }
     });
 
-    sendButton.addEventListener("click", sendMessage);
+  }
 
-    input.addEventListener("focus", () => {
-      setTimeout(() => scrollToBottom(true), 250);
-    });
 
-    if (window.visualViewport) {
-      const handleViewport = () => {
-        if (document.activeElement === input) {
-          scrollToBottom(true);
-        }
-      };
+  /*
+    ========================================
+    INPUT UI
+    ========================================
+  */
 
-      window.visualViewport.addEventListener("resize", handleViewport);
-      window.visualViewport.addEventListener("scroll", handleViewport);
+  function updateInputUI() {
+
+    const hasText =
+      input.value.trim().length > 0;
+
+
+    if (hasText) {
+
+      composerActions.style.display =
+        "none";
+
+      micButton.style.display =
+        "none";
+
+      sendButton.classList.add(
+        "visible"
+      );
+
+    } else {
+
+      composerActions.style.display =
+        "flex";
+
+      micButton.style.display =
+        "flex";
+
+      sendButton.classList.remove(
+        "visible"
+      );
+
     }
 
-    updateComposerState();
+  }
+
+
+  /*
+    ========================================
+    CREATE MESSAGE
+    ========================================
+  */
+
+  function createMessage(
+    senderName,
+    text,
+    type
+  ) {
+
+    const group =
+      document.createElement("div");
+
+    group.className =
+      `message-group ${type}`;
+
+
+    const sender =
+      document.createElement("div");
+
+    sender.className =
+      "sender";
+
+    sender.textContent =
+      senderName;
+
+
+    const message =
+      document.createElement("div");
+
+    message.className =
+      "message";
+
+    message.textContent =
+      text;
+
+
+    group.appendChild(sender);
+
+    group.appendChild(message);
+
+
+    return group;
+
+  }
+
+
+  /*
+    ========================================
+    AI STARTS TYPING
+    ========================================
+  */
+
+  function showTypingState() {
+
+    profileStatus.textContent =
+      "Skriver...";
+
+
+    /*
+      Byt till thinking-bilden.
+    */
+
+    bitmojiImage.src =
+      THINKING_BITMOJI;
+
+
+    /*
+      Ändra placering/storlek.
+    */
+
+    bitmojiCharacter.classList.remove(
+      "peek"
+    );
+
+    bitmojiCharacter.classList.add(
+      "thinking"
+    );
+
+
+    /*
+      Visa bubblan med tre prickar.
+    */
+
+    typingWrapper.classList.add(
+      "visible"
+    );
+
+
     scrollToBottom(true);
-  </script>
+
+  }
+
+
+  /*
+    ========================================
+    AI STOPS TYPING
+    ========================================
+  */
+
+  function hideTypingState() {
+
+    profileStatus.textContent =
+      "Online";
+
+
+    /*
+      Byt tillbaka till peek-bilden.
+    */
+
+    bitmojiImage.src =
+      PEEK_BITMOJI;
+
+
+    bitmojiCharacter.classList.remove(
+      "thinking"
+    );
+
+    bitmojiCharacter.classList.add(
+      "peek"
+    );
+
+
+    typingWrapper.classList.remove(
+      "visible"
+    );
+
+  }
+
+
+  /*
+    ========================================
+    DEMO AI
+
+    Denna ersätter vi senare med riktig AI.
+    ========================================
+  */
+
+  function generateAIReply(userText) {
+
+    const text =
+      userText
+        .toLowerCase()
+        .trim();
+
+
+    if (
+      text === "hej" ||
+      text === "tja" ||
+      text === "tjena"
+    ) {
+
+      return "Hej 👋 Vad händer?";
+
+    }
+
+
+    if (
+      text.includes("hur mår du")
+    ) {
+
+      return "Jag mår bra 🤍 Hur mår du själv?";
+
+    }
+
+
+    if (
+      text.includes("vem är du")
+    ) {
+
+      return "Jag är My AI 😌";
+
+    }
+
+
+    if (
+      text.includes("snapchat")
+    ) {
+
+      return "Det börjar faktiskt kännas rätt mycket som Snapchat nu 👀";
+
+    }
+
+
+    if (
+      text.includes("bitmoji")
+    ) {
+
+      return "Jag gillar min Bitmoji faktiskt 😭";
+
+    }
+
+
+    return "Just nu använder jag demosvar, men snart kan vi koppla in riktig AI.";
+
+  }
+
+
+  /*
+    ========================================
+    SEND
+    ========================================
+  */
+
+  function sendMessage() {
+
+    const text =
+      input.value.trim();
+
+
+    if (!text) {
+      return;
+    }
+
+
+    /*
+      User message.
+    */
+
+    const userMessage =
+      createMessage(
+        "Jag",
+        text,
+        "user"
+      );
+
+
+    chat.insertBefore(
+      userMessage,
+      messageInsertPoint
+    );
+
+
+    /*
+      Clear input.
+    */
+
+    input.value = "";
+
+    updateInputUI();
+
+    scrollToBottom(true);
+
+
+    /*
+      AI begins typing.
+    */
+
+    showTypingState();
+
+
+    /*
+      Demo reply.
+    */
+
+    const reply =
+      generateAIReply(text);
+
+
+    /*
+      Lite varierande typing-tid
+      så det känns naturligare.
+    */
+
+    const typingTime =
+      Math.min(
+        2600,
+        Math.max(
+          1100,
+          reply.length * 25
+        )
+      );
+
+
+    setTimeout(() => {
+
+      hideTypingState();
+
+
+      const aiMessage =
+        createMessage(
+          "My AI",
+          reply,
+          "ai"
+        );
+
+
+      chat.insertBefore(
+        aiMessage,
+        messageInsertPoint
+      );
+
+
+      scrollToBottom(true);
+
+    }, typingTime);
+
+  }
+
+
+  /*
+    ========================================
+    EVENTS
+    ========================================
+  */
+
+  input.addEventListener(
+    "input",
+    updateInputUI
+  );
+
+
+  input.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+      }
+
+    }
+  );
+
+
+  sendButton.addEventListener(
+    "click",
+    sendMessage
+  );
+
+
+  input.addEventListener(
+    "focus",
+    () => {
+
+      setTimeout(
+        () => scrollToBottom(true),
+        250
+      );
+
+    }
+  );
+
+
+  /*
+    ========================================
+    INITIAL STATE
+    ========================================
+  */
+
+  bitmojiImage.src =
+    PEEK_BITMOJI;
+
+  bitmojiCharacter.classList.add(
+    "peek"
+  );
+
+  updateInputUI();
+
+  scrollToBottom();
+
+</script>
+
 </body>
 </html>
