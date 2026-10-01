@@ -1,1377 +1,1816 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
-  >
+<meta charset="UTF-8">
 
-  <meta name="theme-color" content="#000000">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+>
 
-  <title>My AI</title>
+<meta name="theme-color" content="#000000">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+<title>Moa 💞</title>
 
-    :root {
-      --app-height: 100dvh;
+<style>
 
-      --background: #000000;
-      --header: #09090b;
-      --composer: #08080a;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
 
-      --border: #1d1d21;
-      --bubble: #17171b;
-      --bubble-border: #29292f;
+:root {
 
-      --text: #ffffff;
-      --muted: #898990;
+  --app-height: 100dvh;
 
-      --snap-blue: #24a8ff;
-      --snap-red: #ff2d55;
+  --bg: #000000;
+  --header: #09090b;
+  --composer: #08080a;
 
-      --composer-height: 76px;
-    }
+  --border: #1c1c20;
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
+  --bubble: #17171b;
+  --bubble-border: #29292f;
 
-      background: #000;
+  --text: #ffffff;
+  --muted: #8c8c93;
 
-      color: white;
+  --snap-blue: #24a8ff;
+  --snap-red: #ff2d55;
 
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
-    }
+  --composer-height: 76px;
 
-    button,
-    input {
-      font: inherit;
-    }
+}
 
-    button {
-      cursor: pointer;
-    }
+html,
+body {
 
-    /* ========================================
-       APP
-       ======================================== */
+  width: 100%;
+  height: 100%;
 
-    .app {
-      position: relative;
+  overflow: hidden;
 
-      width: 100%;
-      height: var(--app-height);
+  background: #000;
 
-      overflow: hidden;
+  color: white;
 
-      background: var(--background);
-    }
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
 
-    @media (min-width: 700px) {
-      body {
-        display: flex;
-        justify-content: center;
+}
 
-        background: #050505;
-      }
+button,
+input {
+  font: inherit;
+}
 
-      .app {
-        max-width: 430px;
+button {
+  cursor: pointer;
+}
 
-        border-left: 1px solid #161616;
-        border-right: 1px solid #161616;
-      }
-    }
 
-    /* ========================================
-       HEADER
-       ======================================== */
+/* =========================
+   APP
+   ========================= */
 
-    .header {
-      position: absolute;
+.app {
 
-      top: 0;
-      left: 0;
-      right: 0;
+  position: relative;
 
-      height: calc(78px + env(safe-area-inset-top));
+  width: 100%;
+  height: var(--app-height);
 
-      padding:
-        calc(8px + env(safe-area-inset-top))
-        12px
-        8px;
+  overflow: hidden;
 
-      z-index: 30;
+  background: var(--bg);
 
-      display: flex;
-      align-items: center;
+}
 
-      gap: 8px;
 
-      background: var(--header);
+@media (min-width: 700px) {
 
-      border-bottom: 1px solid var(--border);
-    }
+  body {
 
-    .header-button {
-      width: 40px;
-      height: 40px;
+    display: flex;
 
-      flex-shrink: 0;
+    justify-content: center;
 
-      border: none;
-      border-radius: 50%;
-
-      background: transparent;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .header-button svg {
-      width: 25px;
-      height: 25px;
-    }
-
-    .profile {
-      flex: 1;
-
-      min-width: 0;
-
-      display: flex;
-      align-items: center;
-
-      gap: 10px;
-    }
-
-    .profile-avatar {
-      width: 50px;
-      height: 50px;
-
-      flex-shrink: 0;
-
-      border-radius: 50%;
-
-      overflow: hidden;
-
-      background: #eeeeee;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .profile-avatar img {
-      width: 125%;
-      height: 125%;
-
-      object-fit: cover;
-
-      object-position: center 24%;
-    }
-
-    .profile-info {
-      min-width: 0;
-    }
-
-    .profile-name {
-      font-size: 20px;
-      font-weight: 750;
-
-      line-height: 1.1;
-
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .profile-status {
-      margin-top: 3px;
-
-      font-size: 14px;
-
-      color: var(--muted);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-
-      gap: 1px;
-    }
-
-    /* ========================================
-       CHAT
-       ======================================== */
-
-    .chat {
-      position: absolute;
-
-      top: calc(78px + env(safe-area-inset-top));
-      left: 0;
-      right: 0;
-
-      bottom:
-        calc(
-          var(--composer-height)
-          + env(safe-area-inset-bottom)
-        );
-
-      z-index: 1;
-
-      overflow-y: auto;
-
-      overscroll-behavior: contain;
-
-      padding:
-        18px
-        12px
-        155px;
-
-      background: #000;
-
-      scrollbar-width: none;
-    }
-
-    .chat::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* ========================================
-       DATE DIVIDER
-       ======================================== */
-
-    .date-divider {
-      display: flex;
-      align-items: center;
-
-      gap: 12px;
-
-      margin: 4px 0 22px;
-    }
-
-    .date-divider-line {
-      flex: 1;
-
-      height: 1px;
-
-      background: #1d1d20;
-    }
-
-    .date-divider-text {
-      font-size: 11px;
-      font-weight: 700;
-
-      letter-spacing: 1px;
-
-      color: #77777e;
-    }
-
-    /* ========================================
-       MESSAGES
-       ======================================== */
-
-    .message-group {
-      display: flex;
-      flex-direction: column;
-
-      margin-bottom: 18px;
-
-      gap: 5px;
-    }
-
-    .message-group.ai {
-      align-items: flex-start;
-    }
-
-    .message-group.user {
-      align-items: flex-end;
-    }
-
-    .sender {
-      padding: 0 3px;
-
-      font-size: 14px;
-      font-weight: 750;
-    }
-
-    .message-group.ai .sender {
-      color: var(--snap-blue);
-    }
-
-    .message-group.user .sender {
-      color: var(--snap-red);
-    }
-
-    .message {
-      max-width: 84%;
-
-      padding: 12px 15px;
-
-      border: 1px solid var(--bubble-border);
-
-      border-radius: 20px;
-
-      background: var(--bubble);
-
-      color: #ffffff;
-
-      font-size: 16px;
-
-      line-height: 1.4;
-
-      word-break: break-word;
-    }
-
-    .message-group.ai .message {
-      border-top-left-radius: 8px;
-    }
-
-    .message-group.user .message {
-      max-width: 75%;
-
-      border-top-right-radius: 8px;
-
-      background: #151519;
-    }
-
-    /* ========================================
-       BITMOJI STAGE
-
-       Detta lagret ligger:
-       ÖVER chatten
-       UNDER composer-panelen
-       ======================================== */
-
-    .bitmoji-stage {
-      position: absolute;
-
-      left: 14px;
-
-      bottom:
-        calc(
-          var(--composer-height)
-          + env(safe-area-inset-bottom)
-          - 19px
-        );
-
-      width: 180px;
-      height: 180px;
-
-      z-index: 15;
-
-      pointer-events: none;
-    }
-
-    .bitmoji-character {
-      position: absolute;
-
-      transform-origin: bottom center;
-
-      transition:
-        opacity 0.18s ease,
-        transform 0.22s ease,
-        width 0.22s ease,
-        left 0.22s ease,
-        bottom 0.22s ease;
-    }
-
-    .bitmoji-character img {
-      display: block;
-
-      width: 100%;
-      height: auto;
-
-      user-select: none;
-
-      -webkit-user-drag: none;
-    }
-
-    /* ========================================
-       IDLE / PEEK
-
-       bitmoji_peek.png
-       ======================================== */
-
-    .bitmoji-character.peek {
-      width: 158px;
-
-      left: -4px;
-
-      /*
-        Bilden går ner bakom composer-panelen.
-        Panelen täcker nederdelen.
-      */
-      bottom: -21px;
-
-      transform: translateY(0);
-    }
-
-    /* ========================================
-       THINKING
-
-       bitmoji_thinking.png
-       ======================================== */
-
-    .bitmoji-character.thinking {
-      width: 111px;
-
-      left: 2px;
-
-      /*
-        Thinking-bilden är mycket högre,
-        därför behöver den tryckas längre ner.
-      */
-      bottom: -47px;
-
-      transform: translateY(-5px);
-    }
-
-    /* ========================================
-       TYPING BUBBLE
-       ======================================== */
-
-    .typing-wrapper {
-      position: absolute;
-
-      left: 87px;
-      bottom: 105px;
-
-      opacity: 0;
-
-      transform:
-        translateY(8px)
-        scale(0.94);
-
-      transition:
-        opacity 0.18s ease,
-        transform 0.18s ease;
-
-      pointer-events: none;
-    }
-
-    .typing-wrapper.visible {
-      opacity: 1;
-
-      transform:
-        translateY(0)
-        scale(1);
-    }
-
-    .typing-bubble {
-      position: relative;
-
-      min-width: 64px;
-      height: 41px;
-
-      padding: 0 14px;
-
-      border-radius: 23px;
-
-      background: #ffffff;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      box-shadow:
-        0 7px 18px
-        rgba(0, 0, 0, 0.35);
-    }
-
-    .typing-bubble::after {
-      content: "";
-
-      position: absolute;
-
-      left: -5px;
-      bottom: 7px;
-
-      width: 15px;
-      height: 15px;
-
-      background: white;
-
-      transform: rotate(32deg);
-
-      border-bottom-right-radius: 12px;
-    }
-
-    .typing-dots {
-      display: flex;
-      align-items: center;
-
-      gap: 5px;
-    }
-
-    .typing-dots span {
-      display: block;
-
-      width: 7px;
-      height: 7px;
-
-      border-radius: 50%;
-
-      background: #252525;
-
-      animation:
-        typingDot
-        1s
-        infinite
-        ease-in-out;
-    }
-
-    .typing-dots span:nth-child(2) {
-      animation-delay: 0.14s;
-    }
-
-    .typing-dots span:nth-child(3) {
-      animation-delay: 0.28s;
-    }
-
-    @keyframes typingDot {
-      0%,
-      75%,
-      100% {
-        opacity: 0.35;
-
-        transform: translateY(0);
-      }
-
-      35% {
-        opacity: 1;
-
-        transform: translateY(-3px);
-      }
-    }
-
-    /* ========================================
-       COMPOSER
-       ======================================== */
-
-    .composer-shell {
-      position: absolute;
-
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      z-index: 20;
-
-      min-height:
-        calc(
-          var(--composer-height)
-          + env(safe-area-inset-bottom)
-        );
-
-      padding:
-        9px
-        10px
-        calc(10px + env(safe-area-inset-bottom));
-
-      background:
-        rgba(8, 8, 10, 0.985);
-
-      border-top:
-        1px solid #1a1a1e;
-
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .composer {
-      width: 100%;
-
-      display: flex;
-      align-items: center;
-
-      gap: 7px;
-    }
-
-    /* CAMERA */
-
-    .camera-button {
-      width: 46px;
-      height: 46px;
-
-      flex-shrink: 0;
-
-      border: none;
-      border-radius: 50%;
-
-      background: white;
-      color: black;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .camera-button svg {
-      width: 25px;
-      height: 25px;
-    }
-
-    /* INPUT */
-
-    .input-shell {
-      flex: 1;
-
-      min-width: 0;
-
-      height: 46px;
-
-      padding:
-        0
-        9px
-        0
-        11px;
-
-      border:
-        2px solid #38383e;
-
-      border-radius: 25px;
-
-      background: #060607;
-
-      display: flex;
-      align-items: center;
-
-      gap: 7px;
-    }
-
-    .input-red-line {
-      width: 3px;
-      height: 25px;
-
-      flex-shrink: 0;
-
-      border-radius: 999px;
-
-      background: var(--snap-red);
-    }
-
-    .chat-input {
-      flex: 1;
-
-      min-width: 0;
-
-      height: 100%;
-
-      border: none;
-      outline: none;
-
-      background: transparent;
-
-      color: white;
-
-      font-size: 16px;
-    }
-
-    .chat-input::placeholder {
-      color: #7a7a82;
-    }
-
-    /* MIC INSIDE INPUT */
-
-    .input-action {
-      width: 31px;
-      height: 31px;
-
-      flex-shrink: 0;
-
-      border: none;
-      border-radius: 50%;
-
-      background: transparent;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .input-action svg {
-      width: 22px;
-      height: 22px;
-
-      fill: none;
-
-      stroke: currentColor;
-      stroke-width: 2;
-
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* ACTIONS OUTSIDE INPUT */
-
-    .composer-actions {
-      display: flex;
-      align-items: center;
-
-      flex-shrink: 0;
-
-      gap: 1px;
-    }
-
-    .composer-action {
-      width: 33px;
-      height: 40px;
-
-      border: none;
-
-      background: transparent;
-      color: white;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .composer-action svg {
-      width: 24px;
-      height: 24px;
-
-      fill: none;
-
-      stroke: currentColor;
-      stroke-width: 2;
-
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* SEND */
-
-    .send-button {
-      width: 40px;
-      height: 40px;
-
-      flex-shrink: 0;
-
-      border: none;
-      border-radius: 50%;
-
-      background: #0a84ff;
-
-      color: white;
-
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .send-button.visible {
-      display: flex;
-    }
-
-    .send-button svg {
-      width: 21px;
-      height: 21px;
-
-      fill: none;
-
-      stroke: currentColor;
-      stroke-width: 2.5;
-
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* ========================================
-       SMALL PHONES
-       ======================================== */
-
-    @media (max-width: 375px) {
-      .profile-avatar {
-        width: 46px;
-        height: 46px;
-      }
-
-      .profile-name {
-        font-size: 18px;
-      }
-
-      .header {
-        padding-left: 7px;
-        padding-right: 7px;
-      }
-
-      .composer-shell {
-        padding-left: 7px;
-        padding-right: 7px;
-      }
-
-      .composer {
-        gap: 5px;
-      }
-
-      .camera-button {
-        width: 43px;
-        height: 43px;
-      }
-
-      .composer-action {
-        width: 29px;
-      }
-
-      .composer-action svg {
-        width: 22px;
-        height: 22px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="app" id="app">
-
-  <!-- ======================================
-       HEADER
-       ====================================== -->
-
-  <header class="header">
-
-    <button
-      class="header-button"
-      aria-label="Tillbaka"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.7"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M15 18l-6-6 6-6"></path>
-      </svg>
-    </button>
-
-    <div class="profile">
-
-      <div class="profile-avatar">
-        <img
-          src="bitmoji_idle.png"
-          alt="My AI"
-        >
-      </div>
-
-      <div class="profile-info">
-
-        <div class="profile-name">
-          My AI
-        </div>
-
-        <div
-          class="profile-status"
-          id="profileStatus"
-        >
-          Online
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="header-actions">
-
-      <!-- PHONE -->
-
-      <button
-        class="header-button"
-        aria-label="Ring"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path
-            d="
-              M6.6 10.8
-              c1.7 3.3 4.3 5.9 7.6 7.6
-              l2.5-2.5
-              c.3-.3.8-.4 1.2-.3
-              1.3.4 2.7.6 4.1.6
-              .6 0 1 .4 1 1V21
-              c0 .6-.4 1-1 1
-              C11.5 22 2 12.5 2 1
-              c0-.6.4-1 1-1h3.8
-              c.6 0 1 .4 1 1
-              0 1.4.2 2.8.6 4.1
-              .1.4 0 .9-.3 1.2
-              l-2.5 2.5z
-            "
-          ></path>
-        </svg>
-      </button>
-
-      <!-- VIDEO -->
-
-      <button
-        class="header-button"
-        aria-label="Videosamtal"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path
-            d="
-              M17 10.5V7
-              c0-1.1-.9-2-2-2H4
-              C2.9 5 2 5.9 2 7v10
-              c0 1.1.9 2 2 2h11
-              c1.1 0 2-.9 2-2v-3.5
-              l5 4v-11l-5 4z
-            "
-          ></path>
-        </svg>
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <!-- ======================================
-       CHAT
-       ====================================== -->
-
-  <main
-    class="chat"
-    id="chat"
-  >
-
-    <div class="date-divider">
-
-      <div class="date-divider-line"></div>
-
-      <div class="date-divider-text">
-        NU
-      </div>
-
-      <div class="date-divider-line"></div>
-
-    </div>
-
-
-    <div class="message-group ai">
-
-      <div class="sender">
-        My AI
-      </div>
-
-      <div class="message">
-        Hej 👋 Vad vill du att vi ska snacka om?
-      </div>
-
-    </div>
-
-
-    <div id="messageInsertPoint"></div>
-
-  </main>
-
-
-  <!-- ======================================
-       BITMOJI
-
-       Detta lager är alltid aktivt.
-       ====================================== -->
-
-  <div class="bitmoji-stage">
-
-    <div
-      class="bitmoji-character peek"
-      id="bitmojiCharacter"
-    >
-
-      <img
-        id="bitmojiImage"
-        src="bitmoji_peek.png"
-        alt="My AI Bitmoji"
-      >
-
-    </div>
-
-
-    <!-- TYPING BUBBLE -->
-
-    <div
-      class="typing-wrapper"
-      id="typingWrapper"
-    >
-
-      <div class="typing-bubble">
-
-        <div class="typing-dots">
-
-          <span></span>
-          <span></span>
-          <span></span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ======================================
-       COMPOSER
-       ====================================== -->
-
-  <div class="composer-shell">
-
-    <div class="composer">
-
-      <!-- CAMERA -->
-
-      <button
-        class="camera-button"
-        aria-label="Kamera"
-      >
-
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.1"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-
-          <path
-            d="
-              M14.5 4
-              l1.5 2H20
-              a2 2 0 0 1 2 2v10
-              a2 2 0 0 1-2 2H4
-              a2 2 0 0 1-2-2V8
-              a2 2 0 0 1 2-2h4
-              l1.5-2z
-            "
-          ></path>
-
-          <circle
-            cx="12"
-            cy="13"
-            r="4"
-          ></circle>
-
-        </svg>
-
-      </button>
-
-
-      <!-- INPUT -->
-
-      <div class="input-shell">
-
-        <div class="input-red-line"></div>
-
-        <input
-          id="messageInput"
-          class="chat-input"
-          type="text"
-          placeholder="Chat"
-          autocomplete="off"
-          autocorrect="on"
-          autocapitalize="sentences"
-          spellcheck="true"
-          enterkeyhint="send"
-        >
-
-
-        <!-- MIC -->
-
-        <button
-          class="input-action"
-          id="micButton"
-          aria-label="Mikrofon"
-        >
-
-          <svg viewBox="0 0 24 24">
-
-            <path
-              d="
-                M12 3
-                a3 3 0 0 1 3 3v5
-                a3 3 0 1 1-6 0V6
-                a3 3 0 0 1 3-3z
-              "
-            ></path>
-
-            <path
-              d="
-                M19 10
-                a7 7 0 0 1-14 0
-              "
-            ></path>
-
-            <path d="M12 17v4"></path>
-
-          </svg>
-
-        </button>
-
-      </div>
-
-
-      <!-- EXTRA ACTIONS -->
-
-      <div
-        class="composer-actions"
-        id="composerActions"
-      >
-
-        <!-- EMOJI -->
-
-        <button
-          class="composer-action"
-          aria-label="Emoji"
-        >
-
-          <svg viewBox="0 0 24 24">
-
-            <circle
-              cx="12"
-              cy="12"
-              r="9"
-            ></circle>
-
-            <path d="M9 10h.01"></path>
-            <path d="M15 10h.01"></path>
-
-            <path
-              d="
-                M8 14
-                s1.5 2 4 2
-                4-2 4-2
-              "
-            ></path>
-
-          </svg>
-
-        </button>
-
-
-        <!-- STICKER / CHAT -->
-
-        <button
-          class="composer-action"
-          aria-label="Sticker"
-        >
-
-          <svg viewBox="0 0 24 24">
-
-            <path
-              d="
-                M20 15
-                a2 2 0 0 1-2 2H9
-                l-4 4V6
-                a2 2 0 0 1 2-2h11
-                a2 2 0 0 1 2 2z
-              "
-            ></path>
-
-          </svg>
-
-        </button>
-
-
-        <!-- GALLERY -->
-
-        <button
-          class="composer-action"
-          aria-label="Galleri"
-        >
-
-          <svg viewBox="0 0 24 24">
-
-            <rect
-              x="3"
-              y="5"
-              width="18"
-              height="14"
-              rx="2"
-            ></rect>
-
-            <circle
-              cx="8.5"
-              cy="10"
-              r="1.4"
-            ></circle>
-
-            <path
-              d="
-                M21 15
-                l-5-5
-                -8 8
-              "
-            ></path>
-
-          </svg>
-
-        </button>
-
-      </div>
-
-
-      <!-- SEND -->
-
-      <button
-        class="send-button"
-        id="sendButton"
-        aria-label="Skicka"
-      >
-
-        <svg viewBox="0 0 24 24">
-
-          <path d="M5 12h14"></path>
-
-          <path
-            d="M13 6l6 6-6 6"
-          ></path>
-
-        </svg>
-
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<script>
-  /*
-    ========================================
-    ELEMENTS
-    ========================================
-  */
-
-  const app =
-    document.getElementById("app");
-
-  const chat =
-    document.getElementById("chat");
-
-  const input =
-    document.getElementById("messageInput");
-
-  const sendButton =
-    document.getElementById("sendButton");
-
-  const micButton =
-    document.getElementById("micButton");
-
-  const composerActions =
-    document.getElementById("composerActions");
-
-  const bitmojiImage =
-    document.getElementById("bitmojiImage");
-
-  const bitmojiCharacter =
-    document.getElementById("bitmojiCharacter");
-
-  const typingWrapper =
-    document.getElementById("typingWrapper");
-
-  const profileStatus =
-    document.getElementById("profileStatus");
-
-  const messageInsertPoint =
-    document.getElementById("messageInsertPoint");
-
-
-  /*
-    ========================================
-    BITMOJI FILES
-    ========================================
-  */
-
-  const PEEK_BITMOJI =
-    "bitmoji_peek.png";
-
-  const THINKING_BITMOJI =
-    "bitmoji_thinking.png";
-
-
-  /*
-    ========================================
-    MOBILE VIEWPORT
-
-    Gör att composer följer med upp när
-    iPhone/Android visar sitt RIKTIGA
-    tangentbord.
-    ========================================
-  */
-
-  function updateViewportHeight() {
-
-    const viewportHeight =
-      window.visualViewport
-        ? window.visualViewport.height
-        : window.innerHeight;
-
-    document.documentElement.style.setProperty(
-      "--app-height",
-      viewportHeight + "px"
-    );
+    background: #050505;
 
   }
 
 
-  updateViewportHeight();
+  .app {
+
+    max-width: 430px;
+
+    border-left:
+      1px solid #161616;
+
+    border-right:
+      1px solid #161616;
+
+  }
+
+}
 
 
-  window.addEventListener(
-    "resize",
-    updateViewportHeight
+/* =========================
+   HEADER
+   ========================= */
+
+.header {
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height:
+    calc(
+      78px +
+      env(safe-area-inset-top)
+    );
+
+  padding:
+    calc(
+      8px +
+      env(safe-area-inset-top)
+    )
+    12px
+    8px;
+
+  z-index: 30;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  background: var(--header);
+
+  border-bottom:
+    1px solid var(--border);
+
+}
+
+
+.header-button {
+
+  width: 40px;
+  height: 40px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+}
+
+
+.header-button svg {
+
+  width: 25px;
+  height: 25px;
+
+}
+
+
+.profile {
+
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+
+.profile-avatar {
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  background: #eee;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+}
+
+
+.profile-avatar img {
+
+  width: 125%;
+  height: 125%;
+
+  object-fit: cover;
+
+  object-position:
+    center 24%;
+
+}
+
+
+.profile-info {
+
+  min-width: 0;
+
+}
+
+
+.profile-name {
+
+  font-size: 20px;
+
+  font-weight: 750;
+
+  line-height: 1.1;
+
+}
+
+
+.profile-status {
+
+  margin-top: 3px;
+
+  font-size: 14px;
+
+  color: var(--muted);
+
+}
+
+
+.header-actions {
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+
+/* =========================
+   CHAT
+   ========================= */
+
+.chat {
+
+  position: absolute;
+
+  top:
+    calc(
+      78px +
+      env(safe-area-inset-top)
+    );
+
+  left: 0;
+  right: 0;
+
+  bottom:
+    calc(
+      var(--composer-height) +
+      env(safe-area-inset-bottom)
+    );
+
+  z-index: 1;
+
+  overflow-y: auto;
+
+  overscroll-behavior:
+    contain;
+
+  padding:
+    18px
+    12px
+    155px;
+
+  background: #000;
+
+  scrollbar-width: none;
+
+}
+
+
+.chat::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* =========================
+   DATE
+   ========================= */
+
+.date-divider {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin:
+    4px
+    0
+    22px;
+
+}
+
+
+.date-divider-line {
+
+  height: 1px;
+
+  flex: 1;
+
+  background: #1d1d20;
+
+}
+
+
+.date-divider-text {
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #77777e;
+
+}
+
+
+/* =========================
+   MESSAGES
+   ========================= */
+
+.message-group {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  margin-bottom: 18px;
+
+}
+
+
+.message-group.ai {
+
+  align-items:
+    flex-start;
+
+}
+
+
+.message-group.user {
+
+  align-items:
+    flex-end;
+
+}
+
+
+.sender {
+
+  padding:
+    0 3px;
+
+  font-size: 14px;
+
+  font-weight: 750;
+
+}
+
+
+.message-group.ai
+.sender {
+
+  color: var(--snap-blue);
+
+}
+
+
+.message-group.user
+.sender {
+
+  color: var(--snap-red);
+
+}
+
+
+.message {
+
+  max-width: 84%;
+
+  padding:
+    12px
+    15px;
+
+  border:
+    1px solid
+    var(--bubble-border);
+
+  border-radius: 20px;
+
+  background:
+    var(--bubble);
+
+  color: white;
+
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+
+}
+
+
+.message-group.ai
+.message {
+
+  border-top-left-radius:
+    8px;
+
+}
+
+
+.message-group.user
+.message {
+
+  max-width: 75%;
+
+  border-top-right-radius:
+    8px;
+
+}
+
+
+/* =========================
+   BITMOJI
+   ========================= */
+
+.bitmoji-stage {
+
+  position: absolute;
+
+  left: 14px;
+
+  bottom:
+    calc(
+      var(--composer-height) +
+      env(safe-area-inset-bottom)
+      - 19px
+    );
+
+  width: 180px;
+
+  height: 180px;
+
+  z-index: 15;
+
+  pointer-events: none;
+
+}
+
+
+.bitmoji-character {
+
+  position: absolute;
+
+  transform-origin:
+    bottom center;
+
+  transition:
+    opacity .18s ease,
+    transform .22s ease,
+    width .22s ease,
+    left .22s ease,
+    bottom .22s ease;
+
+}
+
+
+.bitmoji-character img {
+
+  display: block;
+
+  width: 100%;
+
+  height: auto;
+
+  user-select: none;
+
+  -webkit-user-drag: none;
+
+}
+
+
+/* idle */
+
+.bitmoji-character.peek {
+
+  width: 158px;
+
+  left: -4px;
+
+  bottom: -21px;
+
+  transform:
+    translateY(0);
+
+}
+
+
+/* thinking */
+
+.bitmoji-character.thinking {
+
+  width: 111px;
+
+  left: 2px;
+
+  bottom: -47px;
+
+  transform:
+    translateY(-5px);
+
+}
+
+
+/* =========================
+   TYPING BUBBLE
+   ========================= */
+
+.typing-wrapper {
+
+  position: absolute;
+
+  left: 87px;
+
+  bottom: 105px;
+
+  opacity: 0;
+
+  transform:
+    translateY(8px)
+    scale(.94);
+
+  transition:
+    opacity .18s ease,
+    transform .18s ease;
+
+}
+
+
+.typing-wrapper.visible {
+
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+}
+
+
+.typing-bubble {
+
+  position: relative;
+
+  min-width: 64px;
+
+  height: 41px;
+
+  padding:
+    0 14px;
+
+  border-radius: 23px;
+
+  background: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      0,
+      0,
+      0,
+      .35
+    );
+
+}
+
+
+.typing-bubble::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: -5px;
+
+  bottom: 7px;
+
+  width: 15px;
+
+  height: 15px;
+
+  background: white;
+
+  transform:
+    rotate(32deg);
+
+  border-bottom-right-radius:
+    12px;
+
+}
+
+
+.typing-dots {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+}
+
+
+.typing-dots span {
+
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #252525;
+
+  animation:
+    typingDot
+    1s
+    infinite
+    ease-in-out;
+
+}
+
+
+.typing-dots
+span:nth-child(2) {
+
+  animation-delay:
+    .14s;
+
+}
+
+
+.typing-dots
+span:nth-child(3) {
+
+  animation-delay:
+    .28s;
+
+}
+
+
+@keyframes typingDot {
+
+  0%,
+  75%,
+  100% {
+
+    opacity: .35;
+
+    transform:
+      translateY(0);
+
+  }
+
+
+  35% {
+
+    opacity: 1;
+
+    transform:
+      translateY(-3px);
+
+  }
+
+}
+
+
+/* =========================
+   COMPOSER
+   ========================= */
+
+.composer-shell {
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 20;
+
+  min-height:
+    calc(
+      var(--composer-height) +
+      env(safe-area-inset-bottom)
+    );
+
+  padding:
+    9px
+    10px
+    calc(
+      10px +
+      env(safe-area-inset-bottom)
+    );
+
+  border-top:
+    1px solid #1a1a1e;
+
+  background:
+    rgba(
+      8,
+      8,
+      10,
+      .985
+    );
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+}
+
+
+.composer {
+
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+}
+
+
+/* camera */
+
+.camera-button {
+
+  width: 46px;
+
+  height: 46px;
+
+  flex-shrink: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: white;
+
+  color: black;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+
+.camera-button svg {
+
+  width: 25px;
+
+  height: 25px;
+
+}
+
+
+/* input */
+
+.input-shell {
+
+  flex: 1;
+
+  min-width: 0;
+
+  height: 46px;
+
+  padding:
+    0
+    9px
+    0
+    11px;
+
+  border:
+    2px solid #38383e;
+
+  border-radius:
+    25px;
+
+  background:
+    #060607;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+}
+
+
+.input-red-line {
+
+  width: 3px;
+
+  height: 25px;
+
+  border-radius:
+    999px;
+
+  background:
+    var(--snap-red);
+
+  flex-shrink: 0;
+
+}
+
+
+.chat-input {
+
+  flex: 1;
+
+  min-width: 0;
+
+  height: 100%;
+
+  border: none;
+
+  outline: none;
+
+  background:
+    transparent;
+
+  color: white;
+
+  font-size: 16px;
+
+}
+
+
+.chat-input::placeholder {
+
+  color: #7a7a82;
+
+}
+
+
+/* mic */
+
+.input-action {
+
+  width: 31px;
+
+  height: 31px;
+
+  border: none;
+
+  background:
+    transparent;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+}
+
+
+.input-action svg {
+
+  width: 22px;
+
+  height: 22px;
+
+  fill: none;
+
+  stroke:
+    currentColor;
+
+  stroke-width: 2;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+
+}
+
+
+/* icons */
+
+.composer-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 1px;
+
+  flex-shrink: 0;
+
+}
+
+
+.composer-action {
+
+  width: 33px;
+
+  height: 40px;
+
+  border: none;
+
+  background:
+    transparent;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+
+.composer-action svg {
+
+  width: 24px;
+
+  height: 24px;
+
+  fill: none;
+
+  stroke:
+    currentColor;
+
+  stroke-width: 2;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+
+}
+
+
+/* send */
+
+.send-button {
+
+  width: 40px;
+
+  height: 40px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    #0a84ff;
+
+  color: white;
+
+  display: none;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+}
+
+
+.send-button.visible {
+
+  display: flex;
+
+}
+
+
+.send-button svg {
+
+  width: 21px;
+
+  height: 21px;
+
+  fill: none;
+
+  stroke:
+    currentColor;
+
+  stroke-width: 2.5;
+
+  stroke-linecap:
+    round;
+
+  stroke-linejoin:
+    round;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div
+  class="app"
+  id="app"
+>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+
+<button
+  class="header-button"
+  aria-label="Tillbaka"
+>
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2.7"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+
+<path
+  d="M15 18l-6-6 6-6"
+></path>
+
+</svg>
+
+</button>
+
+
+
+<div class="profile">
+
+
+<div class="profile-avatar">
+
+<img
+  src="bitmoji_idle.png"
+  alt="Moa"
+/>
+
+</div>
+
+
+<div class="profile-info">
+
+<div class="profile-name">
+
+Moa 💞
+
+</div>
+
+<div
+  class="profile-status"
+  id="profileStatus"
+>
+
+Online
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="header-actions">
+
+
+<button
+  class="header-button"
+  aria-label="Ring"
+>
+
+<svg
+  viewBox="0 0 24 24"
+  fill="currentColor"
+>
+
+<path
+  d="
+  M6.6 10.8
+  c1.7 3.3
+  4.3 5.9
+  7.6 7.6
+  l2.5-2.5
+  c.3-.3.8-.4 1.2-.3
+  1.3.4 2.7.6 4.1.6
+  .6 0 1 .4 1 1V21
+  c0 .6-.4 1-1 1
+  C11.5 22 2 12.5 2 1
+  c0-.6.4-1 1-1h3.8
+  c.6 0 1 .4 1 1
+  0 1.4.2 2.8.6 4.1
+  .1.4 0 .9-.3 1.2
+  l-2.5 2.5z
+  "
+></path>
+
+</svg>
+
+</button>
+
+
+
+<button
+  class="header-button"
+  aria-label="Videosamtal"
+>
+
+<svg
+  viewBox="0 0 24 24"
+  fill="currentColor"
+>
+
+<path
+  d="
+  M17 10.5V7
+  c0-1.1-.9-2-2-2H4
+  C2.9 5 2 5.9 2 7v10
+  c0 1.1.9 2 2 2h11
+  c1.1 0 2-.9 2-2v-3.5
+  l5 4v-11l-5 4z
+  "
+></path>
+
+</svg>
+
+</button>
+
+
+</div>
+
+
+</header>
+
+
+
+<!-- CHAT -->
+
+<main
+  class="chat"
+  id="chat"
+>
+
+
+<div class="date-divider">
+
+<div
+  class="date-divider-line"
+></div>
+
+<div
+  class="date-divider-text"
+>
+
+NU
+
+</div>
+
+<div
+  class="date-divider-line"
+></div>
+
+</div>
+
+
+
+<div
+  id="messageList"
+></div>
+
+
+<div
+  id="messageInsertPoint"
+></div>
+
+
+</main>
+
+
+
+<!-- BITMOJI -->
+
+<div class="bitmoji-stage">
+
+
+<div
+  class="bitmoji-character peek"
+  id="bitmojiCharacter"
+>
+
+<img
+  id="bitmojiImage"
+  src="bitmoji_peek.png"
+  alt="Moa Bitmoji"
+/>
+
+</div>
+
+
+
+<div
+  class="typing-wrapper"
+  id="typingWrapper"
+>
+
+<div class="typing-bubble">
+
+<div class="typing-dots">
+
+<span></span>
+<span></span>
+<span></span>
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- COMPOSER -->
+
+<div class="composer-shell">
+
+
+<div class="composer">
+
+
+<button
+  class="camera-button"
+  aria-label="Kamera"
+>
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2.1"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+
+<path
+  d="
+  M14.5 4
+  l1.5 2H20
+  a2 2 0 0 1 2 2v10
+  a2 2 0 0 1-2 2H4
+  a2 2 0 0 1-2-2V8
+  a2 2 0 0 1 2-2h4
+  l1.5-2z
+  "
+></path>
+
+<circle
+  cx="12"
+  cy="13"
+  r="4"
+></circle>
+
+</svg>
+
+</button>
+
+
+
+<div class="input-shell">
+
+
+<div
+  class="input-red-line"
+></div>
+
+
+<input
+  id="messageInput"
+  class="chat-input"
+  type="text"
+  placeholder="Chat"
+  autocomplete="off"
+  autocorrect="on"
+  autocapitalize="sentences"
+  spellcheck="true"
+  enterkeyhint="send"
+/>
+
+
+
+<button
+  class="input-action"
+  id="micButton"
+  aria-label="Mikrofon"
+>
+
+<svg viewBox="0 0 24 24">
+
+<path
+  d="
+  M12 3
+  a3 3 0 0 1 3 3v5
+  a3 3 0 1 1-6 0V6
+  a3 3 0 0 1 3-3z
+  "
+></path>
+
+<path
+  d="
+  M19 10
+  a7 7 0 0 1-14 0
+  "
+></path>
+
+<path
+  d="M12 17v4"
+></path>
+
+</svg>
+
+</button>
+
+
+</div>
+
+
+
+<div
+  class="composer-actions"
+  id="composerActions"
+>
+
+
+<button
+  class="composer-action"
+  aria-label="Emoji"
+>
+
+<svg viewBox="0 0 24 24">
+
+<circle
+  cx="12"
+  cy="12"
+  r="9"
+></circle>
+
+<path d="M9 10h.01"></path>
+
+<path d="M15 10h.01"></path>
+
+<path
+  d="
+  M8 14
+  s1.5 2 4 2
+  4-2 4-2
+  "
+></path>
+
+</svg>
+
+</button>
+
+
+
+<button
+  class="composer-action"
+  aria-label="Sticker"
+>
+
+<svg viewBox="0 0 24 24">
+
+<path
+  d="
+  M20 15
+  a2 2 0 0 1-2 2H9
+  l-4 4V6
+  a2 2 0 0 1 2-2h11
+  a2 2 0 0 1 2 2z
+  "
+></path>
+
+</svg>
+
+</button>
+
+
+
+<button
+  class="composer-action"
+  aria-label="Galleri"
+>
+
+<svg viewBox="0 0 24 24">
+
+<rect
+  x="3"
+  y="5"
+  width="18"
+  height="14"
+  rx="2"
+></rect>
+
+<circle
+  cx="8.5"
+  cy="10"
+  r="1.4"
+></circle>
+
+<path
+  d="
+  M21 15
+  l-5-5
+  -8 8
+  "
+></path>
+
+</svg>
+
+</button>
+
+
+</div>
+
+
+
+<button
+  class="send-button"
+  id="sendButton"
+  aria-label="Skicka"
+>
+
+<svg viewBox="0 0 24 24">
+
+<path
+  d="M5 12h14"
+></path>
+
+<path
+  d="M13 6l6 6-6 6"
+></path>
+
+</svg>
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+/*
+  =========================
+  CONFIG
+  =========================
+*/
+
+const WORKER_URL =
+  "https://moa-ai-backend.seekernets.workers.dev";
+
+
+const PEEK_BITMOJI =
+  "bitmoji_peek.png";
+
+
+const THINKING_BITMOJI =
+  "bitmoji_thinking.png";
+
+
+const STORAGE_KEY =
+  "moa_chat_history_v1";
+
+
+/*
+  AI settings
+
+  Sen kan vi koppla detta
+  till din inställningsmeny.
+*/
+
+const aiSettings = {
+
+  name:
+    "Moa 💞",
+
+  personality:
+    "varm, avslappnad, rolig och naturlig",
+
+  replyLength:
+    "kort",
+
+  emojiLevel:
+    "medium",
+
+  customInstructions:
+    ""
+
+};
+
+
+
+/*
+  =========================
+  ELEMENTS
+  =========================
+*/
+
+const chat =
+  document.getElementById(
+    "chat"
   );
 
 
-  if (window.visualViewport) {
+const messageList =
+  document.getElementById(
+    "messageList"
+  );
 
-    window.visualViewport.addEventListener(
+
+const input =
+  document.getElementById(
+    "messageInput"
+  );
+
+
+const sendButton =
+  document.getElementById(
+    "sendButton"
+  );
+
+
+const micButton =
+  document.getElementById(
+    "micButton"
+  );
+
+
+const composerActions =
+  document.getElementById(
+    "composerActions"
+  );
+
+
+const bitmojiImage =
+  document.getElementById(
+    "bitmojiImage"
+  );
+
+
+const bitmojiCharacter =
+  document.getElementById(
+    "bitmojiCharacter"
+  );
+
+
+const typingWrapper =
+  document.getElementById(
+    "typingWrapper"
+  );
+
+
+const profileStatus =
+  document.getElementById(
+    "profileStatus"
+  );
+
+
+
+/*
+  =========================
+  HISTORY
+  =========================
+*/
+
+let conversationHistory = [];
+
+
+try {
+
+  const saved =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
+
+
+  if (saved) {
+
+    const parsed =
+      JSON.parse(saved);
+
+
+    if (
+      Array.isArray(parsed)
+    ) {
+
+      conversationHistory =
+        parsed;
+
+    }
+
+  }
+
+}
+
+catch {
+
+  conversationHistory = [];
+
+}
+
+
+
+/*
+  =========================
+  SAVE HISTORY
+  =========================
+*/
+
+function saveHistory() {
+
+  try {
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(
+        conversationHistory
+      )
+    );
+
+  }
+
+  catch {
+
+    // ignore storage error
+
+  }
+
+}
+
+
+
+/*
+  =========================
+  VIEWPORT
+  =========================
+*/
+
+function updateViewportHeight() {
+
+  const height =
+    window.visualViewport
+      ? window.visualViewport.height
+      : window.innerHeight;
+
+
+  document
+    .documentElement
+    .style
+    .setProperty(
+      "--app-height",
+      height + "px"
+    );
+
+}
+
+
+updateViewportHeight();
+
+
+window.addEventListener(
+  "resize",
+  updateViewportHeight
+);
+
+
+if (
+  window.visualViewport
+) {
+
+  window.visualViewport
+    .addEventListener(
       "resize",
       () => {
 
         updateViewportHeight();
 
+
         if (
-          document.activeElement === input
+          document.activeElement
+          === input
         ) {
 
           setTimeout(
-            () => scrollToBottom(true),
-            60
+            () =>
+              scrollToBottom(
+                true
+              ),
+            80
           );
 
         }
@@ -1379,448 +1818,665 @@
       }
     );
 
-  }
+}
 
 
-  /*
-    ========================================
-    SCROLL
-    ========================================
-  */
 
-  function scrollToBottom(force = false) {
+/*
+  =========================
+  SCROLL
+  =========================
+*/
 
-    requestAnimationFrame(() => {
+function scrollToBottom(
+  force = false
+) {
+
+  requestAnimationFrame(
+    () => {
 
       chat.scrollTop =
         chat.scrollHeight;
 
+
       if (force) {
 
-        setTimeout(() => {
+        setTimeout(
+          () => {
 
-          chat.scrollTop =
-            chat.scrollHeight;
+            chat.scrollTop =
+              chat.scrollHeight;
 
-        }, 100);
+          },
+          100
+        );
 
       }
 
-    });
-
-  }
-
-
-  /*
-    ========================================
-    INPUT UI
-    ========================================
-  */
-
-  function updateInputUI() {
-
-    const hasText =
-      input.value.trim().length > 0;
-
-
-    if (hasText) {
-
-      composerActions.style.display =
-        "none";
-
-      micButton.style.display =
-        "none";
-
-      sendButton.classList.add(
-        "visible"
-      );
-
-    } else {
-
-      composerActions.style.display =
-        "flex";
-
-      micButton.style.display =
-        "flex";
-
-      sendButton.classList.remove(
-        "visible"
-      );
-
     }
+  );
+
+}
+
+
+
+/*
+  =========================
+  INPUT UI
+  =========================
+*/
+
+function updateInputUI() {
+
+  const hasText =
+    input
+      .value
+      .trim()
+      .length > 0;
+
+
+  if (hasText) {
+
+    composerActions
+      .style
+      .display =
+      "none";
+
+
+    micButton
+      .style
+      .display =
+      "none";
+
+
+    sendButton
+      .classList
+      .add(
+        "visible"
+      );
 
   }
 
+  else {
 
-  /*
-    ========================================
-    CREATE MESSAGE
-    ========================================
-  */
+    composerActions
+      .style
+      .display =
+      "flex";
 
-  function createMessage(
-    senderName,
-    text,
-    type
+
+    micButton
+      .style
+      .display =
+      "flex";
+
+
+    sendButton
+      .classList
+      .remove(
+        "visible"
+      );
+
+  }
+
+}
+
+
+
+/*
+  =========================
+  MESSAGE DOM
+  =========================
+*/
+
+function createMessage(
+  senderName,
+  text,
+  type
+) {
+
+  const group =
+    document.createElement(
+      "div"
+    );
+
+
+  group.className =
+    `message-group ${type}`;
+
+
+  const sender =
+    document.createElement(
+      "div"
+    );
+
+
+  sender.className =
+    "sender";
+
+
+  sender.textContent =
+    senderName;
+
+
+  const message =
+    document.createElement(
+      "div"
+    );
+
+
+  message.className =
+    "message";
+
+
+  message.textContent =
+    text;
+
+
+  group.appendChild(
+    sender
+  );
+
+
+  group.appendChild(
+    message
+  );
+
+
+  return group;
+
+}
+
+
+
+/*
+  =========================
+  RENDER HISTORY
+  =========================
+*/
+
+function renderHistory() {
+
+  messageList.innerHTML =
+    "";
+
+
+  if (
+    conversationHistory.length === 0
   ) {
 
-    const group =
-      document.createElement("div");
-
-    group.className =
-      `message-group ${type}`;
-
-
-    const sender =
-      document.createElement("div");
-
-    sender.className =
-      "sender";
-
-    sender.textContent =
-      senderName;
-
-
-    const message =
-      document.createElement("div");
-
-    message.className =
-      "message";
-
-    message.textContent =
-      text;
-
-
-    group.appendChild(sender);
-
-    group.appendChild(message);
-
-
-    return group;
-
-  }
-
-
-  /*
-    ========================================
-    AI STARTS TYPING
-    ========================================
-  */
-
-  function showTypingState() {
-
-    profileStatus.textContent =
-      "Skriver...";
-
-
-    /*
-      Byt till thinking-bilden.
-    */
-
-    bitmojiImage.src =
-      THINKING_BITMOJI;
-
-
-    /*
-      Ändra placering/storlek.
-    */
-
-    bitmojiCharacter.classList.remove(
-      "peek"
-    );
-
-    bitmojiCharacter.classList.add(
-      "thinking"
-    );
-
-
-    /*
-      Visa bubblan med tre prickar.
-    */
-
-    typingWrapper.classList.add(
-      "visible"
-    );
-
-
-    scrollToBottom(true);
-
-  }
-
-
-  /*
-    ========================================
-    AI STOPS TYPING
-    ========================================
-  */
-
-  function hideTypingState() {
-
-    profileStatus.textContent =
-      "Online";
-
-
-    /*
-      Byt tillbaka till peek-bilden.
-    */
-
-    bitmojiImage.src =
-      PEEK_BITMOJI;
-
-
-    bitmojiCharacter.classList.remove(
-      "thinking"
-    );
-
-    bitmojiCharacter.classList.add(
-      "peek"
-    );
-
-
-    typingWrapper.classList.remove(
-      "visible"
-    );
-
-  }
-
-
-  /*
-    ========================================
-    DEMO AI
-
-    Denna ersätter vi senare med riktig AI.
-    ========================================
-  */
-
-  function generateAIReply(userText) {
-
-    const text =
-      userText
-        .toLowerCase()
-        .trim();
-
-
-    if (
-      text === "hej" ||
-      text === "tja" ||
-      text === "tjena"
-    ) {
-
-      return "Hej 👋 Vad händer?";
-
-    }
-
-
-    if (
-      text.includes("hur mår du")
-    ) {
-
-      return "Jag mår bra 🤍 Hur mår du själv?";
-
-    }
-
-
-    if (
-      text.includes("vem är du")
-    ) {
-
-      return "Jag är My AI 😌";
-
-    }
-
-
-    if (
-      text.includes("snapchat")
-    ) {
-
-      return "Det börjar faktiskt kännas rätt mycket som Snapchat nu 👀";
-
-    }
-
-
-    if (
-      text.includes("bitmoji")
-    ) {
-
-      return "Jag gillar min Bitmoji faktiskt 😭";
-
-    }
-
-
-    return "Just nu använder jag demosvar, men snart kan vi koppla in riktig AI.";
-
-  }
-
-
-  /*
-    ========================================
-    SEND
-    ========================================
-  */
-
-  function sendMessage() {
-
-    const text =
-      input.value.trim();
-
-
-    if (!text) {
-      return;
-    }
-
-
-    /*
-      User message.
-    */
-
-    const userMessage =
+    const welcome =
       createMessage(
-        "Jag",
-        text,
-        "user"
+        "Moa 💞",
+        "Hejj 💞",
+        "ai"
       );
 
 
-    chat.insertBefore(
-      userMessage,
-      messageInsertPoint
+    messageList.appendChild(
+      welcome
     );
 
 
-    /*
-      Clear input.
-    */
+    return;
 
-    input.value = "";
-
-    updateInputUI();
-
-    scrollToBottom(true);
+  }
 
 
-    /*
-      AI begins typing.
-    */
+  for (
+    const item
+    of conversationHistory
+  ) {
 
-    showTypingState();
+    if (
+      item.role === "user"
+    ) {
 
-
-    /*
-      Demo reply.
-    */
-
-    const reply =
-      generateAIReply(text);
-
-
-    /*
-      Lite varierande typing-tid
-      så det känns naturligare.
-    */
-
-    const typingTime =
-      Math.min(
-        2600,
-        Math.max(
-          1100,
-          reply.length * 25
+      messageList.appendChild(
+        createMessage(
+          "Jag",
+          item.content,
+          "user"
         )
       );
 
-
-    setTimeout(() => {
-
-      hideTypingState();
+    }
 
 
-      const aiMessage =
+    if (
+      item.role === "assistant"
+    ) {
+
+      messageList.appendChild(
         createMessage(
-          "My AI",
-          reply,
+          "Moa 💞",
+          item.content,
           "ai"
-        );
-
-
-      chat.insertBefore(
-        aiMessage,
-        messageInsertPoint
+        )
       );
 
+    }
 
-      scrollToBottom(true);
+  }
 
-    }, typingTime);
+}
+
+
+
+/*
+  =========================
+  TYPING
+  =========================
+*/
+
+function showTypingState() {
+
+  profileStatus.textContent =
+    "Skriver...";
+
+
+  bitmojiImage.src =
+    THINKING_BITMOJI;
+
+
+  bitmojiCharacter
+    .classList
+    .remove(
+      "peek"
+    );
+
+
+  bitmojiCharacter
+    .classList
+    .add(
+      "thinking"
+    );
+
+
+  typingWrapper
+    .classList
+    .add(
+      "visible"
+    );
+
+
+  scrollToBottom(
+    true
+  );
+
+}
+
+
+
+function hideTypingState() {
+
+  profileStatus.textContent =
+    "Online";
+
+
+  bitmojiImage.src =
+    PEEK_BITMOJI;
+
+
+  bitmojiCharacter
+    .classList
+    .remove(
+      "thinking"
+    );
+
+
+  bitmojiCharacter
+    .classList
+    .add(
+      "peek"
+    );
+
+
+  typingWrapper
+    .classList
+    .remove(
+      "visible"
+    );
+
+}
+
+
+
+/*
+  =========================
+  CALL AI
+  =========================
+*/
+
+async function getAIReply() {
+
+  const response =
+    await fetch(
+      WORKER_URL,
+      {
+        method:
+          "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            messages:
+              conversationHistory,
+
+            settings:
+              aiSettings
+          })
+      }
+    );
+
+
+  let data;
+
+
+  try {
+
+    data =
+      await response.json();
+
+  }
+
+  catch {
+
+    throw new Error(
+      "Invalid server response"
+    );
 
   }
 
 
+  if (
+    !response.ok ||
+    !data.ok
+  ) {
+
+    throw new Error(
+      data.error ||
+      "AI request failed"
+    );
+
+  }
+
+
+  if (
+    !data.reply
+  ) {
+
+    throw new Error(
+      "No AI reply"
+    );
+
+  }
+
+
+  return data.reply;
+
+}
+
+
+
+/*
+  =========================
+  SEND
+  =========================
+*/
+
+let sending = false;
+
+
+async function sendMessage() {
+
+  if (sending) {
+    return;
+  }
+
+
+  const text =
+    input
+      .value
+      .trim();
+
+
+  if (!text) {
+    return;
+  }
+
+
+  sending = true;
+
+
   /*
-    ========================================
-    EVENTS
-    ========================================
+    add user message
   */
 
-  input.addEventListener(
-    "input",
-    updateInputUI
+  conversationHistory.push({
+    role:
+      "user",
+
+    content:
+      text
+  });
+
+
+  saveHistory();
+
+
+  messageList.appendChild(
+    createMessage(
+      "Jag",
+      text,
+      "user"
+    )
   );
 
 
-  input.addEventListener(
-    "keydown",
-    event => {
+  input.value =
+    "";
 
-      if (
-        event.key === "Enter"
-      ) {
 
-        event.preventDefault();
+  updateInputUI();
 
-        sendMessage();
 
-      }
+  scrollToBottom(
+    true
+  );
+
+
+  showTypingState();
+
+
+  try {
+
+    const reply =
+      await getAIReply();
+
+
+    conversationHistory.push({
+      role:
+        "assistant",
+
+      content:
+        reply
+    });
+
+
+    saveHistory();
+
+
+    hideTypingState();
+
+
+    messageList.appendChild(
+      createMessage(
+        "Moa 💞",
+        reply,
+        "ai"
+      )
+    );
+
+
+    scrollToBottom(
+      true
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    hideTypingState();
+
+
+    let errorText =
+      "Något gick fel 😭";
+
+
+    if (
+      error.message.includes(
+        "balance"
+      )
+    ) {
+
+      errorText =
+        "API-saldot verkar vara slut 😭";
 
     }
-  );
 
 
-  sendButton.addEventListener(
+    if (
+      error.message.includes(
+        "invalid"
+      )
+    ) {
+
+      errorText =
+        "API-nyckeln verkar inte fungera 😭";
+
+    }
+
+
+    messageList.appendChild(
+      createMessage(
+        "Moa 💞",
+        errorText,
+        "ai"
+      )
+    );
+
+
+    scrollToBottom(
+      true
+    );
+
+  }
+
+  finally {
+
+    sending =
+      false;
+
+  }
+
+}
+
+
+
+/*
+  =========================
+  EVENTS
+  =========================
+*/
+
+input.addEventListener(
+  "input",
+  updateInputUI
+);
+
+
+input.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key ===
+      "Enter"
+    ) {
+
+      event
+        .preventDefault();
+
+
+      sendMessage();
+
+    }
+
+  }
+);
+
+
+sendButton
+  .addEventListener(
     "click",
     sendMessage
   );
 
 
-  input.addEventListener(
-    "focus",
-    () => {
+input.addEventListener(
+  "focus",
+  () => {
 
-      setTimeout(
-        () => scrollToBottom(true),
-        250
-      );
+    setTimeout(
+      () =>
+        scrollToBottom(
+          true
+        ),
+      250
+    );
 
-    }
-  );
+  }
+);
 
 
-  /*
-    ========================================
-    INITIAL STATE
-    ========================================
-  */
 
-  bitmojiImage.src =
-    PEEK_BITMOJI;
+/*
+  =========================
+  START
+  =========================
+*/
 
-  bitmojiCharacter.classList.add(
+bitmojiImage.src =
+  PEEK_BITMOJI;
+
+
+bitmojiCharacter
+  .classList
+  .add(
     "peek"
   );
 
-  updateInputUI();
 
-  scrollToBottom();
+renderHistory();
+
+
+updateInputUI();
+
+
+scrollToBottom();
 
 </script>
+
 
 </body>
 </html>
